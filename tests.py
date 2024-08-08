@@ -181,6 +181,40 @@ class TestALU(unittest.TestCase):
         self.assertEqual(self.alu.calc(1, 1, 0, 1, 0, 0b101, 0b10), 65534)
         self.assertEqual(self.alu.calc(1, 1, 0, 1, 1, 0b101, 0b10), 65531)
 
+class TestMemory(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_sr_latch(self):
+        # StateBased
+        sr_latch = SRLatch()
+        self.assertEqual(sr_latch.data(0, 1), 0)
+        self.assertEqual(sr_latch.data(1, 0), 1)
+        self.assertEqual(sr_latch.data(0, 0), 1)
+
+    def test_data_latch(self):
+        # StateBased
+        data_latch = DataLatch()
+        self.assertEqual(data_latch.data(0, 1), 0)
+        self.assertEqual(data_latch.data(1, 1), 1)
+        self.assertEqual(data_latch.data(0, 0), 1)
+        self.assertEqual(data_latch.data(1, 0), 1)
+
+    def test_data_flip_flop(self):
+        # StateBased
+        data_flip_flop = DataFlipFlop()
+        self.assertEqual(data_flip_flop.data(1, 1), 0)
+        self.assertEqual(data_flip_flop.data(1, 0), 1)
+        self.assertEqual(data_flip_flop.data(0, 1), 1)
+        self.assertEqual(data_flip_flop.data(0, 0), 0)
+
+    def test_register(self):
+        # StateBased
+        register = Register()
+        register.data(0b01, 1)
+        self.assertEqual(register.data(0b1, 0), 1)
+        register.data(0b10, 1)
+        self.assertEqual(register.data(0b10, 0), 2)
 
 # The functions exist due to implementations in Python
 # and to make my life slightly more abstracted.

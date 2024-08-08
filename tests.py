@@ -1,5 +1,8 @@
 import unittest
-from main import *
+from implspec import *
+from units import *
+from memory import *
+
 
 # You will see 65535, that is the integer limit
 # for a 16 bit binary number
@@ -131,6 +134,7 @@ class TestSwitches(unittest.TestCase):
 
 class TestALU(unittest.TestCase):
     def setUp(self):
+        self.conditions = Conditions()
         self.logic_unit = LogicUnit()
         self.arithmetic_unit = ArithmeticUnit()
         self.alu = ALU()
@@ -146,6 +150,24 @@ class TestALU(unittest.TestCase):
         self.assertEqual(self.arithmetic_unit.calc(1, 0, 0b101, 0b100), 1)
         self.assertEqual(self.arithmetic_unit.calc(0, 1, 0b101, 0b100), 6)
         self.assertEqual(self.arithmetic_unit.calc(1, 1, 0b101, 0b100), 4)
+
+    def test_conditionals(self):
+        self.assertEqual(self.conditions.is_zero_2(0, 1), 0)
+        self.assertEqual(self.conditions.is_zero_2(0, 0), 1)
+        self.assertEqual(self.conditions.is_zero_4(0b0100), 0)
+        self.assertEqual(self.conditions.is_zero_4(0b0000), 1)
+        self.assertEqual(self.conditions.is_zero_8(0b10000000), 0)
+        self.assertEqual(self.conditions.is_zero_8(0b00000001), 0)
+        self.assertEqual(self.conditions.is_zero_8(0b00000000), 1)
+        self.assertEqual(self.conditions.is_zero_16(0b0000000000000000), 1)
+        self.assertEqual(self.conditions.is_zero_16(0b1000000000000000), 0)
+        self.assertEqual(self.conditions.is_zero_16(0b0000000000000001), 0)
+
+        self.assertEqual(self.conditions.calc(0, 1, 0, 0b0000000000000000), 0)
+        self.assertEqual(self.conditions.calc(0, 1, 0, 0b0000000000000001), 1)
+        self.assertEqual(self.conditions.calc(0, 1, 0, 0b1000000000000000), 0)
+        self.assertEqual(self.conditions.calc(1, 0, 0, 0b1111111111111011), 1)
+        self.assertEqual(self.conditions.calc(1, 0, 1, 0b0000000000000000), 1)
 
     def test_alu_whole(self):
         self.assertEqual(self.alu.calc(1, 1, 0, 0, 0, 0b11, 0b1), 2)
@@ -164,8 +186,9 @@ class TestALU(unittest.TestCase):
 # and to make my life slightly more abstracted.
 # It's not needed otherwise
 class TestGeneration(unittest.TestCase):
-    def test_generate16(self):
-        self.assertEqual(generate16Bits(0b0), tuple([0]*16))
+    def test_generate_tuples(self):
+        self.assertEqual(generate4Bits(0b0), tuple([0]*4))
+        self.assertEqual(generate8Bits(0b0), tuple([0]*8))
         self.assertEqual(generate16Bits(0b10), (0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0))
 
     def test_generateStream(self):
@@ -179,6 +202,10 @@ class TestMisc(unittest.TestCase):
 
     def test_decimal_to_binary(self):
         self.assertEqual(decimalToBinary(2), 2)
+
+    def test_is_zero(self):
+        self.assertEqual(isLessThanZero((1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)), 1)
+        self.assertEqual(isLessThanZero((0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)), 0)
 
 
 if __name__ == '__main__':

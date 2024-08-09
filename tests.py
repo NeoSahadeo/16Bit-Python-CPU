@@ -208,6 +208,14 @@ class TestMemory(unittest.TestCase):
         self.assertEqual(data_flip_flop.data(0, 1), 1)
         self.assertEqual(data_flip_flop.data(0, 0), 0)
 
+    def test_counter(self):
+        # StateBased
+        counter = Counter()
+        self.assertEqual(counter.inc(0, 1, 0), 0)
+        # counter.inc(0, 0, 1)
+        # self.assertEqual(counter.inc(0, 0, 0), 2)
+
+
     def test_register(self):
         # StateBased
         register = Register()
@@ -215,6 +223,15 @@ class TestMemory(unittest.TestCase):
         self.assertEqual(register.data(0b1, 0), 1)
         register.data(0b10, 1)
         self.assertEqual(register.data(0b10, 0), 2)
+
+    
+    def test_ram(self):
+        # StateBased
+        ram = RAM()
+        ram.write(0b1, 0b1)
+        self.assertEqual(ram.read(0b1), 1)
+        ram.write(0b1, 0b10)
+        self.assertEqual(ram.read(0b1), 2)
 
 # The functions exist due to implementations in Python
 # and to make my life slightly more abstracted.

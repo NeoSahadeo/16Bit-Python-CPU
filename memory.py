@@ -84,9 +84,38 @@ class Register:
 
 class Counter:
     def __init__(self):
-        pass
+        self.register = Register()
+        self.switch = Switch()
+        self.increment_16 = Incremenet16()
+        self.logic_gates = LogicGates()
+    #     self.current_address = tupleToBinary(self.increment_16.inc_by_1())
+    #
+    # def inc(self, stream, clock, bits16 = 0b0):
+    #     value = self.register.data(self.switch.select_16(bits16, self.current_address, stream), clock)
+    #     print(value)
+    #     self.current_address = tupleToBinary(self.increment_16.inc_by_1(value))
+    #     return self.current_address
 
 
 class RAM:
     def __init__(self):
-        pass
+        # RAM can be implemented by chaining 
+        # registers together and implementing
+        # a 4-to-16 (2^4=16) decoder for addressing.
+        
+        # I thinks its going to be unrealistic
+        # to write 64_000 registers that are 
+        # hardcoded in Python.
+        # The theory remains the same, except I
+        # am using arrays to simplify the imple.
+
+        # 2^16 = 65_536
+        self.register = [0]*65536
+
+    def read(self, bits16):
+        return self.register[bits16]
+
+    def write(self, address, value):
+        self.register[address] = value
+        return self.register[address]
+

@@ -148,7 +148,7 @@ class BitAdder16:
 class Incremenet16:
     def __init__(self):
         self.bit_adder_16 = BitAdder16()
-    def inc_by_1(self, bits16 = 0b0):
+    def inc(self, bits16 = 0b0):
         inc_value = self.bit_adder_16.add(bits16, 0b0, 1)
         return inc_value
 

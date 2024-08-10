@@ -20,13 +20,14 @@ class DataLatch:
     def __init__(self):
         self.logic_gates = LogicGates()
         self.sr_latch = SRLatch()
+        self.value = None
 
-    def data(self, d, high):
-        inv_d = self.logic_gates.invert(d)
-        and_comb_one = self.logic_gates.and_gate(d, high)
+    def data(self, data, high):
+        inv_d = self.logic_gates.invert(data)
+        and_comb_one = self.logic_gates.and_gate(data, high)
         and_comb_two = self.logic_gates.and_gate(inv_d, high)
-        self.sr_latch.data(and_comb_one, and_comb_two)
-        return self.sr_latch.nor_two
+        self.value = self.sr_latch.data(and_comb_one, and_comb_two)
+        return self.value
 
 
 class DataFlipFlop:
@@ -35,13 +36,12 @@ class DataFlipFlop:
         self.data_latch_master = DataLatch()
         self.data_latch_slave = DataLatch()
 
-
-    def data(self, d, clock):
+    def data(self, data, clock):
         inv_clock = self.logic_gates.invert(clock)
-        master = self.data_latch_master.data(d, inv_clock)
-        slave = self.data_latch_slave.data(master, inv_clock)
-        return slave
-
+        master = self.data_latch_master.data(data, inv_clock)
+        inv_clock = self.logic_gates.invert(inv_clock)
+        self.data_latch_slave.data(master, inv_clock)
+        return self.data_latch_slave.value
 
 class Register:
     def __init__(self):
@@ -61,6 +61,7 @@ class Register:
         self.data_flip_flop_14 = DataFlipFlop()
         self.data_flip_flop_15 = DataFlipFlop()
         self.data_flip_flop_16 = DataFlipFlop()
+        self.value = 0b0
 
     def data(self, bits16, clock):
         two_bytes = generate16Bits(bits16)
@@ -80,7 +81,8 @@ class Register:
         d14 = self.data_flip_flop_14.data(two_bytes[13], clock)
         d15 = self.data_flip_flop_15.data(two_bytes[14], clock)
         d16 = self.data_flip_flop_16.data(two_bytes[15], clock)
-        return tupleToBinary(((d16,d15,d14,d13,d12,d11,d10,d9,d8,d7,d6,d5,d4,d3,d2,d1)))
+        self.value = tupleToBinary(((d16,d15,d14,d13,d12,d11,d10,d9,d8,d7,d6,d5,d4,d3,d2,d1)))
+        return self.value
 
 class Counter:
     def __init__(self):
@@ -88,13 +90,13 @@ class Counter:
         self.switch = Switch()
         self.increment_16 = Incremenet16()
         self.logic_gates = LogicGates()
-    #     self.current_address = tupleToBinary(self.increment_16.inc_by_1())
-    #
-    # def inc(self, stream, clock, bits16 = 0b0):
-    #     value = self.register.data(self.switch.select_16(bits16, self.current_address, stream), clock)
-    #     print(value)
-    #     self.current_address = tupleToBinary(self.increment_16.inc_by_1(value))
-    #     return self.current_address
+        self.subtract = Subtract16()
+
+    def inc(self, stream, bits16, clock):
+        c_value = tupleToBinary(self.increment_16.inc(self.register.value))
+        select_value = self.switch.select_16(bits16, c_value, stream)
+        self.register.data(select_value, clock)
+        return self.register.value
 
 
 class RAM:

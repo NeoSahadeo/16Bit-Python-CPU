@@ -105,10 +105,10 @@ class TestAdders(unittest.TestCase):
         self.assertEqual(self.bit_adder_16.add(0b0, 0b11, 1), (0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0)) # 3+1(c)
 
     def test_increment_16(self):
-        self.assertEqual(self.increment_16.inc_by_1(0b0), (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1))
-        self.assertEqual(self.increment_16.inc_by_1(0b1), (0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0))
-        self.assertEqual(self.increment_16.inc_by_1(0b10), (0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1))
-        self.assertEqual(self.increment_16.inc_by_1(), (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1))
+        self.assertEqual(self.increment_16.inc(0b0), (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1))
+        self.assertEqual(self.increment_16.inc(0b1), (0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0))
+        self.assertEqual(self.increment_16.inc(0b10), (0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1))
+        self.assertEqual(self.increment_16.inc(), (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1))
 
     def test_subtract_16(self):
         self.assertEqual(self.subtract_16.sub(0b1, 0b1), (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)) # 1-1
@@ -191,38 +191,60 @@ class TestMemory(unittest.TestCase):
         self.assertEqual(sr_latch.data(0, 1), 0)
         self.assertEqual(sr_latch.data(1, 0), 1)
         self.assertEqual(sr_latch.data(0, 0), 1)
+        self.assertEqual(sr_latch.data(0, 1), 0)
 
     def test_data_latch(self):
         # StateBased
         data_latch = DataLatch()
-        self.assertEqual(data_latch.data(0, 1), 0)
-        self.assertEqual(data_latch.data(1, 1), 1)
-        self.assertEqual(data_latch.data(0, 0), 1)
-        self.assertEqual(data_latch.data(1, 0), 1)
+        data_latch.data(0, 1)
+        self.assertEqual(data_latch.value, 0)
+        data_latch.data(1, 1)
+        self.assertEqual(data_latch.value, 1)
+        data_latch.data(1, 0)
+        self.assertEqual(data_latch.value, 1)
+        data_latch.data(0, 0)
+        self.assertEqual(data_latch.value, 1)
 
     def test_data_flip_flop(self):
         # StateBased
         data_flip_flop = DataFlipFlop()
-        self.assertEqual(data_flip_flop.data(1, 1), 0)
-        self.assertEqual(data_flip_flop.data(1, 0), 1)
+        self.assertEqual(data_flip_flop.data(0, 0), 0)
+        self.assertEqual(data_flip_flop.data(1, 0), 0)
+        self.assertEqual(data_flip_flop.data(1, 1), 1)
         self.assertEqual(data_flip_flop.data(0, 1), 1)
+        self.assertEqual(data_flip_flop.data(0, 0), 1)
+        self.assertEqual(data_flip_flop.data(0, 1), 0)
         self.assertEqual(data_flip_flop.data(0, 0), 0)
 
     def test_counter(self):
+        pass
         # StateBased
         counter = Counter()
-        self.assertEqual(counter.inc(0, 1, 0), 0)
-        # counter.inc(0, 0, 1)
-        # self.assertEqual(counter.inc(0, 0, 0), 2)
+        counter.inc(0, 0b0, 0)
+        self.assertEqual(counter.register.value, 0)
+        counter.inc(0, 0b0, 1)
+        self.assertEqual(counter.register.value, 1)
+        counter.inc(0, 0b0, 0)
+        counter.inc(0, 0b0, 1)
+        self.assertEqual(counter.register.value, 2)
+        counter.inc(1, 0b101, 0)
+        counter.inc(1, 0b101, 1)
+        self.assertEqual(counter.register.value, 5)
+        counter.inc(1, 0b101, 0)
+        counter.inc(1, 0b101, 1)
+        self.assertEqual(counter.register.value, 5)
+        counter.inc(0, 0b101, 0)
+        counter.inc(0, 0b101, 1)
+        self.assertEqual(counter.register.value, 6)
 
 
     def test_register(self):
         # StateBased
         register = Register()
-        register.data(0b01, 1)
-        self.assertEqual(register.data(0b1, 0), 1)
-        register.data(0b10, 1)
-        self.assertEqual(register.data(0b10, 0), 2)
+        register.data(0b01, 0)
+        self.assertEqual(register.data(0b1, 1), 1)
+        register.data(0b10, 0)
+        self.assertEqual(register.data(0b10, 1), 2)
 
     
     def test_ram(self):
@@ -232,6 +254,8 @@ class TestMemory(unittest.TestCase):
         self.assertEqual(ram.read(0b1), 1)
         ram.write(0b1, 0b10)
         self.assertEqual(ram.read(0b1), 2)
+        ram.write(0b10, 0b11)
+        self.assertEqual(ram.read(0b10), 3)
 
 # The functions exist due to implementations in Python
 # and to make my life slightly more abstracted.

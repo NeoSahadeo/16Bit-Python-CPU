@@ -197,13 +197,13 @@ class TestMemory(unittest.TestCase):
         # StateBased
         data_latch = DataLatch()
         data_latch.data(0, 1)
-        self.assertEqual(data_latch.value, 0)
+        self.assertEqual(data_latch.sr_latch.nor_two, 0)
         data_latch.data(1, 1)
-        self.assertEqual(data_latch.value, 1)
+        self.assertEqual(data_latch.sr_latch.nor_two, 1)
         data_latch.data(1, 0)
-        self.assertEqual(data_latch.value, 1)
+        self.assertEqual(data_latch.sr_latch.nor_two, 1)
         data_latch.data(0, 0)
-        self.assertEqual(data_latch.value, 1)
+        self.assertEqual(data_latch.sr_latch.nor_two, 1)
 
     def test_data_flip_flop(self):
         # StateBased

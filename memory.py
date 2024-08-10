@@ -20,14 +20,13 @@ class DataLatch:
     def __init__(self):
         self.logic_gates = LogicGates()
         self.sr_latch = SRLatch()
-        self.value = None
 
     def data(self, data, high):
         inv_d = self.logic_gates.invert(data)
         and_comb_one = self.logic_gates.and_gate(data, high)
         and_comb_two = self.logic_gates.and_gate(inv_d, high)
-        self.value = self.sr_latch.data(and_comb_one, and_comb_two)
-        return self.value
+        self.sr_latch.data(and_comb_one, and_comb_two)
+        return self.sr_latch.nor_two
 
 
 class DataFlipFlop:
@@ -41,7 +40,7 @@ class DataFlipFlop:
         master = self.data_latch_master.data(data, inv_clock)
         inv_clock = self.logic_gates.invert(inv_clock)
         self.data_latch_slave.data(master, inv_clock)
-        return self.data_latch_slave.value
+        return self.data_latch_slave.sr_latch.nor_two
 
 class Register:
     def __init__(self):

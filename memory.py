@@ -60,9 +60,9 @@ class Register:
         self.data_flip_flop_14 = DataFlipFlop()
         self.data_flip_flop_15 = DataFlipFlop()
         self.data_flip_flop_16 = DataFlipFlop()
-        self.value = 0b0
+        # self.value = 0b0
 
-    def data(self, bits16, clock):
+    def write(self, bits16, clock):
         two_bytes = generate16Bits(bits16)
         d1 = self.data_flip_flop_1.data(two_bytes[0], clock) 
         d2 = self.data_flip_flop_2.data(two_bytes[1], clock) 
@@ -80,8 +80,27 @@ class Register:
         d14 = self.data_flip_flop_14.data(two_bytes[13], clock)
         d15 = self.data_flip_flop_15.data(two_bytes[14], clock)
         d16 = self.data_flip_flop_16.data(two_bytes[15], clock)
-        self.value = tupleToBinary(((d16,d15,d14,d13,d12,d11,d10,d9,d8,d7,d6,d5,d4,d3,d2,d1)))
-        return self.value
+        return tupleToBinary(((d16,d15,d14,d13,d12,d11,d10,d9,d8,d7,d6,d5,d4,d3,d2,d1)))
+
+    def read(self):
+        d1 = self.data_flip_flop_1.data_latch_slave.sr_latch.nor_two
+        d2 = self.data_flip_flop_2.data_latch_slave.sr_latch.nor_two
+        d3 = self.data_flip_flop_3.data_latch_slave.sr_latch.nor_two
+        d4 = self.data_flip_flop_4.data_latch_slave.sr_latch.nor_two
+        d5 = self.data_flip_flop_5.data_latch_slave.sr_latch.nor_two
+        d6 = self.data_flip_flop_6.data_latch_slave.sr_latch.nor_two
+        d7 = self.data_flip_flop_7.data_latch_slave.sr_latch.nor_two
+        d8 = self.data_flip_flop_8.data_latch_slave.sr_latch.nor_two
+        d9 = self.data_flip_flop_9.data_latch_slave.sr_latch.nor_two
+        d10 = self.data_flip_flop_10.data_latch_slave.sr_latch.nor_two
+        d11 = self.data_flip_flop_11.data_latch_slave.sr_latch.nor_two
+        d12 = self.data_flip_flop_12.data_latch_slave.sr_latch.nor_two
+        d13 = self.data_flip_flop_13.data_latch_slave.sr_latch.nor_two
+        d14 = self.data_flip_flop_14.data_latch_slave.sr_latch.nor_two
+        d15 = self.data_flip_flop_15.data_latch_slave.sr_latch.nor_two
+        d16 = self.data_flip_flop_16.data_latch_slave.sr_latch.nor_two
+        return tupleToBinary(((d16,d15,d14,d13,d12,d11,d10,d9,d8,d7,d6,d5,d4,d3,d2,d1)))
+
 
 class Counter:
     def __init__(self):
@@ -92,10 +111,10 @@ class Counter:
         self.subtract = Subtract16()
 
     def inc(self, stream, bits16, clock):
-        c_value = tupleToBinary(self.increment_16.inc(self.register.value))
+        c_value = tupleToBinary(self.increment_16.inc(self.register.read()))
         select_value = self.switch.select_16(bits16, c_value, stream)
-        self.register.data(select_value, clock)
-        return self.register.value
+        self.register.write(select_value, clock)
+        return self.register.read()
 
 
 class RAM:

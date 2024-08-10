@@ -221,30 +221,32 @@ class TestMemory(unittest.TestCase):
         # StateBased
         counter = Counter()
         counter.inc(0, 0b0, 0)
-        self.assertEqual(counter.register.value, 0)
+        self.assertEqual(counter.register.read(), 0)
         counter.inc(0, 0b0, 1)
-        self.assertEqual(counter.register.value, 1)
+        self.assertEqual(counter.register.read(), 1)
         counter.inc(0, 0b0, 0)
         counter.inc(0, 0b0, 1)
-        self.assertEqual(counter.register.value, 2)
+        self.assertEqual(counter.register.read(), 2)
         counter.inc(1, 0b101, 0)
         counter.inc(1, 0b101, 1)
-        self.assertEqual(counter.register.value, 5)
+        self.assertEqual(counter.register.read(), 5)
         counter.inc(1, 0b101, 0)
         counter.inc(1, 0b101, 1)
-        self.assertEqual(counter.register.value, 5)
+        self.assertEqual(counter.register.read(), 5)
         counter.inc(0, 0b101, 0)
         counter.inc(0, 0b101, 1)
-        self.assertEqual(counter.register.value, 6)
+        self.assertEqual(counter.register.read(), 6)
 
 
     def test_register(self):
         # StateBased
         register = Register()
-        register.data(0b01, 0)
-        self.assertEqual(register.data(0b1, 1), 1)
-        register.data(0b10, 0)
-        self.assertEqual(register.data(0b10, 1), 2)
+        register.write(0b01, 0)
+        register.write(0b1, 1)
+        self.assertEqual(register.read(), 1)
+        register.write(0b10, 0)
+        register.write(0b10, 1)
+        self.assertEqual(register.read(), 2)
 
     
     def test_ram(self):

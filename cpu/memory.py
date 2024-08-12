@@ -140,8 +140,8 @@ class RAM:
     def read(self, bits16):
         return self.register[bits16]
 
-    def write(self, set, address, value, clock):
-        if clock == 1 and set == 1:
+    def write(self, store, address, value, clock):
+        if clock == 1 and store == 1:
             self.register[address] = value
         return self.register[address]
 

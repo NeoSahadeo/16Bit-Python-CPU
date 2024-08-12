@@ -14,6 +14,7 @@ instruction_set = [
     0b0000000000000010, # set a_reg = 2
     0b1000010000000001, # set ram(a_reg) = a_reg + b_reg
 ]
+
 class Computer:
     def __init__(self):
         # State is runtime based
@@ -24,6 +25,13 @@ class Computer:
         # avoid undefined behaviour. Can be fixed by reading from
         # the self.counter function (possibly)
         self.counter_value = 0
+
+    def main_generator(self):
+        i = 0
+        while True:
+            clock = math.ceil(i % 2)
+            yield self.main(clock)
+            i += 1
 
     def main(self, clock):
         instruction = instruction_set[self.counter_value]
@@ -45,9 +53,9 @@ RAM  : {self.working_memory.ram.read(self.working_memory.a_register.read())}""")
 
 if __name__ == '__main__':
     computer = Computer()
+    main_gen = computer.main_generator()
     try:
-        for i in range(0, 100):
-            clock = math.ceil(i % 2)
-            computer.main(clock)
+        while True:
+            next(main_gen)
     except:
-        pass
+        print('End of Instructions')

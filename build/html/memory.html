@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Memory (memory.py) &#8212; A 16-bit cpu in Python 1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Processor (processor.py)" href="processor.html" />
+    <link rel="prev" title="16-bit CPU built in Python documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="memory-memory-py">
+<h1>Memory (memory.py)<a class="headerlink" href="#memory-memory-py" title="Link to this heading">¶</a></h1>
+<p>This explains how memory works in the 16-bit CPU. To understand information on this page requires a basic understanding of
+truth tables and logic gates</p>
+<section id="what-is-memory">
+<span id="memory"></span><h2>What is ‘memory’<a class="headerlink" href="#what-is-memory" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><p>Memory is defined loosley as the ability to recall information that is stored somewhere.</p>
+</div></blockquote>
+<p>Computers can’t remember anything that isn’t hard-coded in hardware. Solid State Drives
+use mosfets that contruct NAND or NOR gates. Hard Disk Drives use magnetic disks with a
+read/write header to store data. These storage methods are <em>non-volatile</em></p>
+<section id="volatile-and-non-volatile">
+<h3>Volatile and Non-volatile<a class="headerlink" href="#volatile-and-non-volatile" title="Link to this heading">¶</a></h3>
+<p>Volatility of memory decribes whether constant electrical flow is required to maintain
+memory. <strong>RAM</strong> as you may have heard is a volatile memory type. It only exists while
+the computer is running. As you’ll read in <a class="reference internal" href="processor.html#processor-instruction-module"><span class="std std-ref">Instruction Module</span></a> RAM
+can only be addressed using the <cite>register ‘a’</cite>.</p>
+<p>RAM looses charge over time which
+requires it to be constantly refreshed. This refresh rate gives way to SRAM and DRAM.
+When the power supply it stopped the refresh of the cells stop and the memory is lost;
+hence volatility.</p>
+<p>On the other side of this we have memory that is maintained when electrical flow is stopped.
+The downside of this method of storage is slower access times and a limited number of read
+and writes.</p>
+<p>For the 16-bit CPU, volatile memory is the only way to effectively keep-up with the processing
+speed of the CPU as well as write the base programs to interact with other storage hardware
+in the first place.</p>
+</section>
+</section>
+<section id="set-reset-latch">
+<h2>Set-Reset Latch<a class="headerlink" href="#set-reset-latch" title="Link to this heading">¶</a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SET</p></th>
+<th class="head"><p>RESET</p></th>
+<th class="head"><p>OUTPUT</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>PREVIOUS</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>UNDEFINED</p></td>
+</tr>
+</tbody>
+</table>
+<p>When reset is 1 we want the output to be 0.
+When set is 1 we want the output to be 1.
+If both set and reset are 0 we want the value that is currently stored.
+Undefined behaviour means that it’s not specified in the documentation and should not be used <strong>EVER</strong>.</p>
+<p>Using the data method from the <code class="docutils literal notranslate"><span class="pre">SRLatch</span></code> class directly:</p>
+<p>Arguments needed are a <cite>set</cite> and <cite>reset</cite> value.</p>
+<p>The return value is the <cite>high-bit</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sr_latch</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">0</span>
+
+<span class="n">sr_latch</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">1</span>
+
+<span class="n">sr_latch</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="data-latch">
+<h2>Data Latch<a class="headerlink" href="#data-latch" title="Link to this heading">¶</a></h2>
+<p>We need to fix make sure that we don’t get undefined behaviour when both set and reset are 1.
+A data latch is a little bit of logic added on top of an SR-Latch to stop both values
+from being equal to eachother.</p>
+<p>This is achieved by adding a <cite>data</cite> and <cite>enable</cite> bit. The inversion of the <cite>data</cite> bit with
+the same <cite>enable</cite> bit ensures that we cannot produce a <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">1</span></code> output for the SR-Latch.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>ENABLE</p></th>
+<th class="head"><p>DATA</p></th>
+<th class="head"><p>OUTPUT</p></th>
+<th class="head"><p>MEMORY</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>RESET</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>SET</p></td>
+</tr>
+</tbody>
+</table>
+<p>Using the data method from the <code class="docutils literal notranslate"><span class="pre">DataLatch</span></code> class directly:</p>
+<p>Arguments needed are a <cite>data</cite> and <cite>high</cite> value.</p>
+<p>The return value is the <cite>high-bit</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_latch</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">0</span>
+
+<span class="n">data_latch</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">1</span>
+
+<span class="n">data_latch</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="data-flip-flop">
+<h2>Data Flip-Flop<a class="headerlink" href="#data-flip-flop" title="Link to this heading">¶</a></h2>
+<p>The next priority is fixing race conditions. Currently running Data Lacthes in parallel
+will result in some latches changing values before others. The is random behaviour and it’s
+outcome is undefined.</p>
+<p>In order to fix this we need to sync bit updates with a <span class="xref std std-ref">clock-cycle</span>.</p>
+<p>Implementing such a cycle is relatively straightforward and can be achieved by chaining
+two data latches together (<em>master</em> and <em>slave</em> respectively).</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>DATA</p></th>
+<th class="head"><p>CLOCK</p></th>
+<th class="head"><p>OUTPUT</p></th>
+<th class="head"><p>MEMORY</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>NO CHANGE</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>RESET</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>NO CHANGE</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>SET</p></td>
+</tr>
+</tbody>
+</table>
+<p>An new value is introduced in the data flip-flop; <strong>store</strong> bit. This
+allows the option to choose whether or not to store the value if a value
+is present. This is useful when switch between different registers but only
+wanting to modifiy a specific register.</p>
+<p>Using the data method from the <code class="docutils literal notranslate"><span class="pre">DataFlipFlop</span></code> class directly:</p>
+<p>Arguments needed are a <cite>store</cite>, <cite>data</cite> and <cite>clock</cite> value.</p>
+<p>The return value is the <cite>high-bit</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_flip_flop</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">data_flip_flop</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">0</span>
+
+<span class="n">data_flip_flop</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">data_flip_flop</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">1</span>
+
+<span class="n">data_flip_flop</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">data_flip_flop</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">0</span>
+</pre></div>
+</div>
+<p>The method needs to be called twice. Once with the value wanted to be stored
+when the clock is on low and another to store the value when the clock is high.</p>
+</section>
+<section id="registers">
+<h2>Registers<a class="headerlink" href="#registers" title="Link to this heading">¶</a></h2>
+<p>A register is a group of data flip-flops. Since this is a 16-bit CPU, the register
+will have 16 data flip-flops.</p>
+<p>The <strong>read</strong> method requires no arguments and returns the currently stored value
+in the register.</p>
+<p>Using the <strong>write</strong> method from the <code class="docutils literal notranslate"><span class="pre">Register</span></code> class directly:
+I’ve implemented a Python specific function that generates a 16-bit number given any
+binary number less than 17 (n &lt; 17); This makes programming tests easier.</p>
+<p>Arguments needed are a <cite>store</cite>, <cite>bits</cite> and <cite>clock</cite> value.</p>
+<p>The return value is the <cite>16_bit_binary</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">register</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mb">0b01</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">register</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mb">0b1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">register</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">1</span>
+
+<span class="n">register</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mb">0b10</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">register</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mb">0b10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">register</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</section>
+<section id="random-access-memory">
+<span id="ram"></span><h2>Random Access Memory<a class="headerlink" href="#random-access-memory" title="Link to this heading">¶</a></h2>
+<p>The method the RAM uses to store values boil down to set-reset latches.</p>
+<p>In order to implement a <strong>randomly</strong> accessible memory the circuitry needs
+a way to tell the difference between bits that have different binary values
+but still have the same number of bits on.</p>
+<p>For example, how would a circuit
+tell the difference between <code class="docutils literal notranslate"><span class="pre">0b100</span></code> (4 in binary) and <code class="docutils literal notranslate"><span class="pre">0b10</span></code> (2 in binary).
+Both of them have the same number of ‘1’ bits and it gets arbitrarily difficult
+as the number of bits increases.</p>
+<p>A circuit known as a <strong>decoder</strong> is needed to assign a unique address to each bit
+in a 16-bit number to correctly address it.</p>
+<section id="implementing-a-decoder">
+<h3>Implementing a decoder<a class="headerlink" href="#implementing-a-decoder" title="Link to this heading">¶</a></h3>
+<p>The name of the game is <strong>reduction</strong>. Recall the maximum amount of memory addresses allowed by a 16-bit number (assuming all bits are ‘1’):</p>
+<div class="math notranslate nohighlight">
+\[2^{16} = 65535\]</div>
+<p>65536 unique addresses. The first 4-bits can be used to assign all addresses into chunks of size 4096-bits
+which gives use 16 groups.</p>
+<p><strong>0000</strong> 000000000000</p>
+<p>The next 3-bits can be used to assign the 4096-bits into chunks of size 512-bits which then gives us
+8 groups.</p>
+<p>0000 <strong>000</strong> 000000000</p>
+<p>The last 9 bits can uniquely all 8 groups of size 512-bits.</p>
+<p>0000000 <strong>000000000</strong></p>
+<p>Which gives us a unique binary number that is unambigous
+for all 65536 values.</p>
+<p>I haven’t implemented the <a class="reference internal" href="#ram"><span class="std std-ref">Random Access Memory</span></a> in a ‘true’ sense. I wanted to have <code class="docutils literal notranslate"><span class="pre">64KB</span></code>
+of Random Access Memory but the implementation of hard-coded RAM would be far-fetched
+to run, let alone write. I opted to just use and array with <code class="docutils literal notranslate"><span class="pre">read</span></code> and <code class="docutils literal notranslate"><span class="pre">write</span></code> methods.</p>
+<p>For fun, let’s have a look at just the decoder truth tables:</p>
+<p><strong>3-to-8 Decoder</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>2^3 = 8</p></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>B</p></td>
+<td><p>C</p></td>
+<td><p>D0</p></td>
+<td><p>D1</p></td>
+<td><p>D2</p></td>
+<td><p>D3</p></td>
+<td><p>D4</p></td>
+<td><p>D5</p></td>
+<td><p>D6</p></td>
+<td><p>D7</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>4-to-16 Decoder</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>2^4 = 16</p></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"></th>
+<th class="head"><p>0</p></th>
+<th class="head"><p>1</p></th>
+<th class="head"><p>2</p></th>
+<th class="head"><p>3</p></th>
+<th class="head"><p>4</p></th>
+<th class="head"><p>5</p></th>
+<th class="head"><p>6</p></th>
+<th class="head"><p>7</p></th>
+<th class="head"><p>8</p></th>
+<th class="head"><p>9</p></th>
+<th class="head"><p>10</p></th>
+<th class="head"><p>11</p></th>
+<th class="head"><p>12</p></th>
+<th class="head"><p>13</p></th>
+<th class="head"><p>14</p></th>
+<th class="head"><p>15</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>Next would be to map each of these values to specific memory locations each implementing a
+<cite>Register</cite> object. INSANE!</p>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">A 16-bit cpu in Python</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Memory (memory.py)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-memory">What is ‘memory’</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#volatile-and-non-volatile">Volatile and Non-volatile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#set-reset-latch">Set-Reset Latch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-latch">Data Latch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-flip-flop">Data Flip-Flop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#registers">Registers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#random-access-memory">Random Access Memory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#implementing-a-decoder">Implementing a decoder</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="processor.html">Processor (processor.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main (main.py)</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">16-bit CPU built in Python documentation</a></li>
+      <li>Next: <a href="processor.html" title="next chapter">Processor (processor.py)</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Neo Sahadeo.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/memory.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

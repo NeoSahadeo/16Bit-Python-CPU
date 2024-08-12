@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Logic Units (units.py) &#8212; A 16-bit cpu in Python 1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Memory (memory.py)" href="memory.html" />
+    <link rel="prev" title="16-bit CPU built in Python documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="logic-units-units-py">
+<h1>Logic Units (units.py)<a class="headerlink" href="#logic-units-units-py" title="Link to this heading">¶</a></h1>
+<p>This page explains the inner logic gate setup of the =. To understand information on this page requires a basic understanding of
+truth tables and logic gates.</p>
+<section id="logic-gates">
+<span id="id1"></span><h2>Logic Gates<a class="headerlink" href="#logic-gates" title="Link to this heading">¶</a></h2>
+<p>This is the most fundemental section in the CPU. All logic gates can be
+derived from the <strong>NAND</strong> gate.</p>
+<section id="nand-gate">
+<h3>NAND GATE<a class="headerlink" href="#nand-gate" title="Link to this heading">¶</a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>OUT</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>The simplest method in which this is implemented in Python is:
+I use the <cite>&amp;</cite> binary operater as other solution involved <strong>if</strong>’s
+which didn’t seem as elegant.</p>
+<div class="math notranslate nohighlight">
+\[bit = -1 \cdot (int(a \&amp; b) - 1)\]</div>
+</section>
+<section id="inverted-gate">
+<h3>INVERTED GATE<a class="headerlink" href="#inverted-gate" title="Link to this heading">¶</a></h3>
+<p>This gate can be created by taking NAND where a is both a and b.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>A</p></th>
+<th class="head"><p>OUT</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="and-gate">
+<h3>AND GATE<a class="headerlink" href="#and-gate" title="Link to this heading">¶</a></h3>
+<p>The AND gate is an inverted NAND.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>OUT</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="or-gate">
+<h3>OR GATE<a class="headerlink" href="#or-gate" title="Link to this heading">¶</a></h3>
+<p>The OR gate is created by inverting both inputs then passing
+the inverted inputs into a NAND gate.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>OUT</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="exclusive-or-gate-xor">
+<h3>EXCLUSIVE OR GATE (XOR)<a class="headerlink" href="#exclusive-or-gate-xor" title="Link to this heading">¶</a></h3>
+<p>The XOR gate descriminates based on the input side. To create
+one, inputs are fed into a NAND gate. The output of this gate
+is discriminated against the NAND of either A or B where the
+final bit is then inverted in and AND.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>OUT</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bit-variants">
+<h3>16-Bit Variants<a class="headerlink" href="#bit-variants" title="Link to this heading">¶</a></h3>
+<p>Implementing a 16-bit versions of the logic gates is as simple as taking
+two 16-bit binary numbers and comparing each index of each value with a
+respective logic gate. Look in <cite>units.py</cite> at line 40 to see the implementation.</p>
+</section>
+</section>
+<section id="half-adder">
+<h2>Half-Adder<a class="headerlink" href="#half-adder" title="Link to this heading">¶</a></h2>
+<p>The Half-Adder is a logical unit that adds two bits together. This will allow
+us to get a maximum value of 3:</p>
+<div class="math notranslate nohighlight">
+\[2^{2} -1 = 3\]</div>
+<p>A Half-Adder will produce a <strong>high</strong> and <strong>low</strong> bit. Where high is 1 if both values
+are 1 (1 + 1 = 2 which is <code class="docutils literal notranslate"><span class="pre">0b10</span></code> in binary). Which can be constructed by process
+of elimination of bits.</p>
+<p><strong>HALF-ADDER TRUTH TABLE</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>HIGH</p></th>
+<th class="head"><p>LOW</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="full-adder">
+<h2>Full-Adder<a class="headerlink" href="#full-adder" title="Link to this heading">¶</a></h2>
+<p>A Full-Adder are two Half-Adders linked together where the value is <cite>allowed</cite> to overflow.
+This overflow is called a carry indicating that the number it too large to fit in the
+current buffer.</p>
+<p>The Full-Adder takes in three bits; A, B, Carry. And will produce a <strong>high</strong> and <strong>low</strong> bit.</p>
+<p><strong>FULL-ADDER TRUTH TABLE</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>CARRY</p></th>
+<th class="head"><p>HIGH</p></th>
+<th class="head"><p>LOW</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="multi-bit-adder">
+<h2>Multi-Bit-Adder<a class="headerlink" href="#multi-bit-adder" title="Link to this heading">¶</a></h2>
+<p>The Multi-Bit-Adder are two or more Full-Adders linked where the carry bit of
+the previous Full-Adder is piped into the current Full-Adder; unless it’s the
+last adder, in-that-case the bit is dropped.</p>
+<p><strong>MULTI-BIT-ADDER TRUTH TABLE</strong></p>
+<p>These are all the possible inputs for two 2-bit numbers and a 1-bit number.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>A1</p></th>
+<th class="head"><p>A2</p></th>
+<th class="head"><p>B1</p></th>
+<th class="head"><p>B2</p></th>
+<th class="head"><p>CARRY</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>DATA BREAKDOWN</strong></p>
+<p>The maximum value of a 3-bit number is 7;</p>
+<div class="math notranslate nohighlight">
+\[2^{3} -1 = 7\]</div>
+<p>The binary number is being broken-down into individual
+bits sorted right to left starting at O2. The decimal
+header is there to help understand the numbering.</p>
+<p><strong>O1</strong> is the expected output for the low bits</p>
+<p><strong>O2</strong> is the expected output for the high bits</p>
+<p><strong>CARRY</strong> is the expected carry output.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>SUM OF ALL 3 in binary</p></th>
+<th class="head"><p>DECIMAL</p></th>
+<th class="head"><p>CARRY</p></th>
+<th class="head"><p>O1</p></th>
+<th class="head"><p>O2</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>2</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>3</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>100</p></td>
+<td><p>4</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>101</p></td>
+<td><p>5</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>110</p></td>
+<td><p>6</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>111</p></td>
+<td><p>7</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>This table then corresponds with the following output below</strong></p>
+<p>First we add the low bits. If there are any carry bits add
+these to the high bits. If there is an overflow change the bit
+to 1.</p>
+<p>Output all low bits because the values will not change if more numbers
+are added.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Low bit sum = A2+B2+CARRY</p></th>
+<th class="head"></th>
+<th class="head"><p>High bit sum = A1+B1+(Low bit sum)</p></th>
+<th class="head"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>HIGH</p></td>
+<td><p>LOW - O2</p></td>
+<td><p>HIGH - CARRY OUT</p></td>
+<td><p>LOW - O1</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bit-adder">
+<h2>16-Bit-Adder<a class="headerlink" href="#bit-adder" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><p>The 16-Bit-Adder functions in the same way the Multi-Bit-Adder works; where the
+high bit is carried over from the previous Full-Adder. Chaining 16 Full-Adders
+together gives you a 16-Bit-Adder. The last high value is dicarded.</p>
+</div></blockquote>
+</section>
+<section id="bit-incrementer">
+<h2>16-Bit-Incrementer<a class="headerlink" href="#bit-incrementer" title="Link to this heading">¶</a></h2>
+</section>
+<section id="bit-subtracter">
+<h2>16-Bit-Subtracter<a class="headerlink" href="#bit-subtracter" title="Link to this heading">¶</a></h2>
+</section>
+<section id="switches">
+<h2>Switches<a class="headerlink" href="#switches" title="Link to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">A 16-bit cpu in Python</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Logic Units (units.py)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#logic-gates">Logic Gates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#nand-gate">NAND GATE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inverted-gate">INVERTED GATE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#and-gate">AND GATE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-gate">OR GATE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exclusive-or-gate-xor">EXCLUSIVE OR GATE (XOR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bit-variants">16-Bit Variants</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#half-adder">Half-Adder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#full-adder">Full-Adder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multi-bit-adder">Multi-Bit-Adder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bit-adder">16-Bit-Adder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bit-incrementer">16-Bit-Incrementer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bit-subtracter">16-Bit-Subtracter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#switches">Switches</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">Memory (memory.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processor.html">Processor (processor.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main (main.py)</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">16-bit CPU built in Python documentation</a></li>
+      <li>Next: <a href="memory.html" title="next chapter">Memory (memory.py)</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Neo Sahadeo.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/units.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

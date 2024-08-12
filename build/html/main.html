@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Main (main.py) &#8212; A 16-bit cpu in Python 1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Processor (processor.py)" href="processor.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="main-main-py">
+<h1>Main (main.py)<a class="headerlink" href="#main-main-py" title="Link to this heading">¶</a></h1>
+<p>This page contains how the <cite>main.py</cite> file works.</p>
+<section id="instruction-set">
+<h2>Instruction Set<a class="headerlink" href="#instruction-set" title="Link to this heading">¶</a></h2>
+<p>The 16-bit processor uses binary instructions
+based on a custom instruction list implemented in the <a class="reference internal" href="processor.html#processor-instruction-module"><span class="std std-ref">Instruction Module</span></a>.</p>
+<section id="creating-an-instruction-set">
+<h3>Creating an Instruction Set<a class="headerlink" href="#creating-an-instruction-set" title="Link to this heading">¶</a></h3>
+<p>Let’s generate a small set of instructions to see how it works.
+The instruction we want to generate:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">add</span> <span class="mi">3</span> <span class="n">to</span> <span class="mi">2</span> <span class="o">-&gt;</span> <span class="n">store</span> <span class="ow">in</span> <span class="n">RAM</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>INSTRUCTION SET</p></th>
+<th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>C</p></th>
+<th class="head"><p>D</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Logic or Arithemtic</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-odd"><td><p>operation code 1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>operation code 2</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>zero replace</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>swap</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>less than</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+<tr class="row-even"><td><p>greater than</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>equal to</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>a register</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>b register</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td><p>RAM</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>select register ‘a’ or RAM</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-even"><td></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+</tr>
+<tr class="row-odd"><td><p>Direct write to register ‘a’ or use ALU</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p>Instruction <strong>A</strong> writes the value <code class="docutils literal notranslate"><span class="pre">0b11</span></code> (3 in binary) to <cite>register ‘a’</cite></p>
+<p>Instruction <strong>B</strong> tells the <span class="xref std std-ref">alu</span> to copy the value in <cite>register ‘a’</cite>
+to <cite>register ‘b’</cite></p>
+<p>Instruction <strong>C</strong> writes the value <code class="docutils literal notranslate"><span class="pre">0b10</span></code> (2 in binary) to <cite>register ‘a’</cite></p>
+<p>Instruction <strong>D</strong> adds the value in <cite>register ‘a’</cite> to the value in <cite>register ‘b’</cite>
+then write the value in <span class="xref std std-ref">ram</span></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The address of <strong>where</strong> to store the value in RAM is determined by the value
+of <cite>register ‘a’</cite></p>
+</div>
+<p>In Python our instruction becomes</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">instruction_set</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="mb">0b0000000000000011</span><span class="p">,</span> <span class="c1"># set a_reg = 3</span>
+    <span class="mb">0b1000001000001001</span><span class="p">,</span> <span class="c1"># set b_reg = a_reg</span>
+    <span class="mb">0b0000000000000010</span><span class="p">,</span> <span class="c1"># set a_reg = 2</span>
+    <span class="mb">0b1000010000000001</span><span class="p">,</span> <span class="c1"># set ram(a_reg) = a_reg + b_reg</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="main-process">
+<h2>Main Process<a class="headerlink" href="#main-process" title="Link to this heading">¶</a></h2>
+<p>To show that the instructions work I’ve created a simple computer to
+run the instruction set. This involves connecting the <span class="xref std std-ref">processor-control-module</span>,
+<a class="reference internal" href="processor.html#processor-instruction-module"><span class="std std-ref">Instruction Module</span></a>, <span class="xref std std-ref">program-counter</span>, <a class="reference internal" href="processor.html#unified-memory"><span class="std std-ref">Unified Memory</span></a> and
+<span class="xref std std-ref">clock-cycles</span> together.</p>
+<p>The main method in the <cite>Computer</cite> class in <cite>main.py</cite> will follow these steps (based on clock cycles):</p>
+<ol class="arabic simple">
+<li><p>Load the current instruction into memory</p></li>
+<li><p>Run the calculation process on the bits</p></li>
+<li><p>Write the output into memory</p></li>
+<li><p>Increment the program counter</p></li>
+</ol>
+<p>The rest of the code in the <cite>main.py</cite> file is boilerplate needed
+to run the instruction using Python’s generator functions.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">A 16-bit cpu in Python</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="memory.html">Memory (memory.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processor.html">Processor (processor.py)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Main (main.py)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#instruction-set">Instruction Set</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-an-instruction-set">Creating an Instruction Set</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#main-process">Main Process</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="processor.html" title="previous chapter">Processor (processor.py)</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Neo Sahadeo.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/main.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

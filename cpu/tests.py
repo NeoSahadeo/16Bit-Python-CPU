@@ -275,7 +275,7 @@ class TestMemory(unittest.TestCase):
         ram.write(0, 0b10, 0b100, 1)
         self.assertEqual(ram.read(0b10), 3)
 
-class ProessorTests(unittest.TestCase):
+class ProcessorTests(unittest.TestCase):
     def setUp(self):
         pass
 

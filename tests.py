@@ -1,5 +1,9 @@
+## **Creative Commons Attribution (CC BY)**
+## Docs are on the Github repo
+
 import unittest
 from implspec import *
+from processor import ControlUnit, Instruction, UnifiedMemory
 from units import *
 from memory import *
 
@@ -208,13 +212,16 @@ class TestMemory(unittest.TestCase):
     def test_data_flip_flop(self):
         # StateBased
         data_flip_flop = DataFlipFlop()
-        self.assertEqual(data_flip_flop.data(0, 0), 0)
-        self.assertEqual(data_flip_flop.data(1, 0), 0)
-        self.assertEqual(data_flip_flop.data(1, 1), 1)
-        self.assertEqual(data_flip_flop.data(0, 1), 1)
-        self.assertEqual(data_flip_flop.data(0, 0), 1)
-        self.assertEqual(data_flip_flop.data(0, 1), 0)
-        self.assertEqual(data_flip_flop.data(0, 0), 0)
+        self.assertEqual(data_flip_flop.data(1, 0, 0), 0)
+        self.assertEqual(data_flip_flop.data(1, 1, 0), 0)
+        self.assertEqual(data_flip_flop.data(1, 1, 1), 1)
+        self.assertEqual(data_flip_flop.data(1, 0, 1), 1)
+        self.assertEqual(data_flip_flop.data(1, 0, 0), 1)
+        self.assertEqual(data_flip_flop.data(1, 0, 1), 0)
+        self.assertEqual(data_flip_flop.data(1, 0, 0), 0)
+
+        self.assertEqual(data_flip_flop.data(0, 1, 1), 0)
+        self.assertEqual(data_flip_flop.data(0, 1, 0), 0)
 
     def test_counter(self):
         pass
@@ -241,23 +248,92 @@ class TestMemory(unittest.TestCase):
     def test_register(self):
         # StateBased
         register = Register()
-        register.write(0b01, 0)
-        register.write(0b1, 1)
+        register.write(1, 0b01, 0)
+        register.write(1, 0b1, 1)
         self.assertEqual(register.read(), 1)
-        register.write(0b10, 0)
-        register.write(0b10, 1)
+        register.write(1, 0b10, 0)
+        register.write(1, 0b10, 1)
+        self.assertEqual(register.read(), 2)
+        register.write(0, 0b11, 0)
+        register.write(0, 0b11, 1)
         self.assertEqual(register.read(), 2)
 
     
     def test_ram(self):
         # StateBased
         ram = RAM()
-        ram.write(0b1, 0b1)
+        ram.write(1, 0b1, 0b1, 0)
+        ram.write(1, 0b1, 0b1, 1)
         self.assertEqual(ram.read(0b1), 1)
-        ram.write(0b1, 0b10)
+        ram.write(1, 0b1, 0b10, 0)
+        ram.write(1, 0b1, 0b10, 1)
         self.assertEqual(ram.read(0b1), 2)
-        ram.write(0b10, 0b11)
+        ram.write(1, 0b10, 0b11, 0)
+        ram.write(1, 0b10, 0b11, 1)
         self.assertEqual(ram.read(0b10), 3)
+
+        ram.write(0, 0b10, 0b100, 0)
+        ram.write(0, 0b10, 0b100, 1)
+        self.assertEqual(ram.read(0b10), 3)
+
+class ProessorTests(unittest.TestCase):
+    def setUp(self):
+        pass
+
+    def test_unified_memory(self):
+        # StateBased
+        unified_memory = UnifiedMemory()
+        unified_memory.write(1, 0, 0, 0b11, 0)
+        unified_memory.write(1, 0, 0, 0b11, 1)
+        self.assertEqual(unified_memory.read(), (3, 0, 0))
+
+        unified_memory.write(0, 0, 1, 0b101, 0)
+        unified_memory.write(0, 0, 1, 0b101, 1)
+        self.assertEqual(unified_memory.read(), (3, 0, 5))
+
+        unified_memory.write(1, 0, 0, 0b101, 0)
+        unified_memory.write(1, 0, 0, 0b101, 1)
+        self.assertEqual(unified_memory.read(), (5, 0, 0))
+        
+        unified_memory.write(1, 0, 0, 0b11, 0)
+        unified_memory.write(1, 0, 0, 0b11, 1)
+        self.assertEqual(unified_memory.read(), (3, 0, 5))
+
+        unified_memory.write(0, 1, 0, 0b10, 0)
+        unified_memory.write(0, 1, 0, 0b10, 1)
+        self.assertEqual(unified_memory.read(), (3, 2, 5))
+
+    def test_instructions(self):
+        # StateBased
+        instruction = Instruction()
+        unified_memory = UnifiedMemory()
+
+        unified_memory.a_register.write(1, 0b10 ,0)
+        unified_memory.a_register.write(1, 0b10 ,1)
+        unified_memory.b_register.write(1, 0b1 ,0)
+        unified_memory.b_register.write(1, 0b1 ,1)
+
+        instr_1 = 0b0000000100000001 # a_reg + b_reg -> store in a_reg
+        out_1 = instruction.calc(instr_1, unified_memory.a_register.read(), unified_memory.b_register.read(), unified_memory.ram.read(0b0))
+        self.assertEqual(out_1, (3, 0, 1, 0, 0))
+
+
+    def test_control_unit(self):
+        # StateBased
+        control_unit = ControlUnit()
+        unified_memory = UnifiedMemory()
+
+        instr_1 = 0b0000000000000011 # a_reg = 3
+        out = control_unit.calc(instr_1, unified_memory.a_register.read(), unified_memory.b_register.read(), unified_memory.ram.read(0b0))
+        self.assertEqual(out, (3, 0, 1, 0, 0))
+        unified_memory.a_register.write(out[2], out[0], 0)
+        unified_memory.a_register.write(out[2], out[0], 1)
+        unified_memory.b_register.write(out[3], out[0], 0)
+        unified_memory.b_register.write(out[3], out[0], 1)
+
+        instr_2 = 0b1000001000001001 # set value of b to a
+        out_2 = control_unit.calc(instr_2, unified_memory.a_register.read(), unified_memory.b_register.read(), unified_memory.ram.read(0b0))
+        self.assertEqual(out_2, (3, 0, 0, 1, 0))
 
 # The functions exist due to implementations in Python
 # and to make my life slightly more abstracted.

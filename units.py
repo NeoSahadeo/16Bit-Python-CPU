@@ -1,3 +1,6 @@
+## **Creative Commons Attribution (CC BY)**
+## Docs are on the Github repo
+
 from implspec import *
 
 class LogicGates:
@@ -215,6 +218,11 @@ class ArithmeticUnit:
         self.subtract_16 = Subtract16()
 
     def calc(self, op1, op2,  bits16_one, bits16_two):
+        # Operation Set:
+        # 0 0 = X + Y
+        # 0 1 = X - Y
+        # 1 0 = X + 1
+        # 1 1 = X - 1
         select_one = self.switch.select_16(1, bits16_two, op2)
         add_value = tupleToBinary(self.bit_adder_16.add(bits16_one, select_one, 0))
         sub_value = tupleToBinary(self.subtract_16.sub(bits16_one, select_one))

@@ -1,5 +1,4 @@
-## **Creative Commons Attribution (CC BY)**
-## Docs are on the Github repo
+# **MIT LICENSE**
 
 from implspec import *
 from units import *

@@ -1,5 +1,4 @@
-## **Creative Commons Attribution (CC BY)**
-## Docs are on the Github repo
+# **MIT LICENSE**
 
 # All functions in this file are implementation specific
 # that being they are needed only in THIS Python 16bit CPU

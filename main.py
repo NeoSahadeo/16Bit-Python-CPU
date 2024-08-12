@@ -1,8 +1,7 @@
+# **MIT LICENSE**
+
 # An emulation of a 16 bit CPU written in Python
 ## By Neo Sahadeo
-
-## **Creative Commons Attribution (CC BY)**
-## Docs are on the Github repo
 
 import math
 from memory import *

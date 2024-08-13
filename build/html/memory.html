@@ -15,7 +15,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Processor (processor.py)" href="processor.html" />
-    <link rel="prev" title="16-bit CPU built in Python documentation" href="index.html" />
+    <link rel="prev" title="Logic Units (units.py)" href="units.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -235,6 +235,15 @@ binary number less than 17 (n &lt; 17); This makes programming tests easier.</p>
 <span class="n">Output</span><span class="p">:</span> <span class="mi">2</span>
 </pre></div>
 </div>
+</section>
+<section id="program-counter">
+<span id="id1"></span><h2>Program Counter<a class="headerlink" href="#program-counter" title="Link to this heading">¶</a></h2>
+<p>The <cite>Program Counter</cite> is a <cite>register</cite> and a <a class="reference internal" href="units.html#increment-16"><span class="std std-ref">16-Bit-Incrementer</span></a> linked togther
+with the option to use a different starting value other than <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">Counter</span></code> class can be used by calling the <code class="docutils literal notranslate"><span class="pre">inc</span></code> method.</p>
+<p>The arguments needed are a stream-bit (see <a class="reference internal" href="units.html#stream-bits"><span class="std std-ref">Switches</span></a>), a <cite>16-bit binary number</cite> and a <span class="xref std std-ref">clock-cycle</span></p>
+<p>The returned value is the <cite>next incremented value</cite> or if the stream-bit is enabled it will
+be the supplied <cite>16-bit binary number</cite> (which comes from <cite>register ‘a’</cite>).</p>
 </section>
 <section id="random-access-memory">
 <span id="ram"></span><h2>Random Access Memory<a class="headerlink" href="#random-access-memory" title="Link to this heading">¶</a></h2>
@@ -761,6 +770,8 @@ to run, let alone write. I opted to just use and array with <code class="docutil
 
 <h3>Navigation</h3>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="implspec.html">Implementation Specific Functions (implspec.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units.html">Logic Units (units.py)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Memory (memory.py)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#what-is-memory">What is ‘memory’</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#volatile-and-non-volatile">Volatile and Non-volatile</a></li>
@@ -770,6 +781,7 @@ to run, let alone write. I opted to just use and array with <code class="docutil
 <li class="toctree-l2"><a class="reference internal" href="#data-latch">Data Latch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#data-flip-flop">Data Flip-Flop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#registers">Registers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#program-counter">Program Counter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#random-access-memory">Random Access Memory</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#implementing-a-decoder">Implementing a decoder</a></li>
 </ul>
@@ -784,7 +796,7 @@ to run, let alone write. I opted to just use and array with <code class="docutil
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">16-bit CPU built in Python documentation</a></li>
+      <li>Previous: <a href="units.html" title="previous chapter">Logic Units (units.py)</a></li>
       <li>Next: <a href="processor.html" title="next chapter">Processor (processor.py)</a></li>
   </ul></li>
 </ul>

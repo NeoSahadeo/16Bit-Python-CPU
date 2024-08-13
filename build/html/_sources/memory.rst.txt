@@ -192,6 +192,21 @@ The return value is the `16_bit_binary`.
         register.read()
         Output: 2
 
+.. _program-counter:
+
+Program Counter
+***************
+
+The `Program Counter` is a `register` and a :ref:`increment-16` linked togther
+with the option to use a different starting value other than ``0``.
+
+The ``Counter`` class can be used by calling the ``inc`` method.
+
+The arguments needed are a stream-bit (see :ref:`stream-bits`), a `16-bit binary number` and a :ref:`clock-cycle`
+
+The returned value is the `next incremented value` or if the stream-bit is enabled it will
+be the supplied `16-bit binary number` (which comes from `register 'a'`).
+
 .. _ram:
 
 Random Access Memory

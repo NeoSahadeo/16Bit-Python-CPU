@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Implementation Specific (implspec.py) &#8212; A 16-bit cpu in Python 1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
+    <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Logic Units (units.py)" href="units.html" />
+    <link rel="prev" title="16-bit CPU built in Python documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="implementation-specific-implspec-py">
+<h1>Implementation Specific (implspec.py)<a class="headerlink" href="#implementation-specific-implspec-py" title="Link to this heading">¶</a></h1>
+<p>This page contains informations about the <a class="reference internal" href="#utility"><span class="std std-ref">Utility Functions</span></a> functions
+needed to operated the CPU such as generating bits, inverting bits,
+bit and reading bits.</p>
+<section id="utility-functions">
+<span id="utility"></span><h2>Utility Functions<a class="headerlink" href="#utility-functions" title="Link to this heading">¶</a></h2>
+<p>These functions exist due the the implementation in Python and to
+make testing the functions and methods easier. The logic remains
+the same without these functions.</p>
+<section id="push-to-tuple">
+<h3>Push to Tuple<a class="headerlink" href="#push-to-tuple" title="Link to this heading">¶</a></h3>
+<p><cite>Push to tuple</cite> takes in an <cite>n</cite> sized array of binary values and
+creates a tuple of binary values <strong>Tuple-binary</strong>.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The bits are reversed to make trailing zeros important
+For example: <code class="docutils literal notranslate"><span class="pre">1,0,0,</span> <span class="pre">0...</span></code> is 4 (in binary) but will not be recognised
+because when pushed to the tuple it will be <code class="docutils literal notranslate"><span class="pre">(...,0,0,1)</span></code> is
+which means 1 (in binary). When reversed: <code class="docutils literal notranslate"><span class="pre">0,0,1,...</span></code> and pushed
+to a tuple it will be <code class="docutils literal notranslate"><span class="pre">(0,0,1,...)</span></code></p>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>Tuple-binary values are always in reverse binary order. Where the
+left most bit is the least and the vice-versa.</p>
+</div>
+</section>
+<section id="generate-x-bits">
+<span id="generate-bits"></span><h3>Generate X Bits<a class="headerlink" href="#generate-x-bits" title="Link to this heading">¶</a></h3>
+<p>Generator function exists to make writing tests and inputs easier. Without
+this function I would have to <cite>‘cheat’</cite> in a sense and use string subscripting
+with integer conversion.</p>
+<p>There are <cite>4</cite>, <cite>8</cite> and <cite>16</cite> bit generators.</p>
+<p>They take in a one <cite>n-bit binary number</cite> (where n &lt; specified-bit).</p>
+<p>Returns a tuple-binary of size <cite>n</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">generate8Bits</span><span class="p">(</span><span class="mb">0b10</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">generate16Bits</span><span class="p">(</span><span class="mb">0b10</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="generate-stream-bits">
+<h3>Generate Stream Bits<a class="headerlink" href="#generate-stream-bits" title="Link to this heading">¶</a></h3>
+<p>Due the implementation of the <a class="reference internal" href="#generate-bits"><span class="std std-ref">Generate X Bits</span></a>, the 16-bit variant of <a class="reference internal" href="units.html#stream-bits"><span class="std std-ref">Switches</span></a>
+needs to be of size 16.</p>
+<p>Where the function does this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="n">bit</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="k">return</span> <span class="mb">0b1111111111111111</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">return</span> <span class="mb">0b0000000000000000</span>
+</pre></div>
+</div>
+<p>Call the function <code class="docutils literal notranslate"><span class="pre">generateStreamBits</span></code> and provide one 1-bit value.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">generateStreamBits</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">65535</span> <span class="c1"># decimal representation</span>
+</pre></div>
+</div>
+</section>
+<section id="tuple-to-binary">
+<h3>Tuple to Binary<a class="headerlink" href="#tuple-to-binary" title="Link to this heading">¶</a></h3>
+<p>Tuple-to-binary takes in a tuple-binary of size <cite>n</cite> and produces
+a value of size <cite>n</cite> in an integer representation (it will be of type <code class="docutils literal notranslate"><span class="pre">int</span></code>
+in Python).</p>
+<p>The argument supplied is the <cite>tuple-binary</cite>.</p>
+<p>The return value is an <cite>integer</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tupleToBinary</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">2</span> <span class="c1"># decimal representation</span>
+</pre></div>
+</div>
+</section>
+<section id="less-than-zero">
+<h3>Less Than Zero<a class="headerlink" href="#less-than-zero" title="Link to this heading">¶</a></h3>
+<p>In order to determine if a number is negative (less than zero) the 16th
+bit is read. If it’s 1 then the number is negative.</p>
+<p>The argument supplied is the <cite>tuple-binary</cite>.</p>
+<p>The return value is an <cite>integer</cite>, 1 if its true, zero if false.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">isLessThanZero</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">1</span>
+
+<span class="n">isLessThanZero</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">0</span>
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">A 16-bit cpu in Python</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Implementation Specific (implspec.py)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#utility-functions">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#push-to-tuple">Push to Tuple</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-x-bits">Generate X Bits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#generate-stream-bits">Generate Stream Bits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tuple-to-binary">Tuple to Binary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#less-than-zero">Less Than Zero</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="units.html">Logic Units (units.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">Memory (memory.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processor.html">Processor (processor.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main (main.py)</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">16-bit CPU built in Python documentation</a></li>
+      <li>Next: <a href="units.html" title="next chapter">Logic Units (units.py)</a></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2024, Neo Sahadeo.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+      |
+      <a href="_sources/implspec.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

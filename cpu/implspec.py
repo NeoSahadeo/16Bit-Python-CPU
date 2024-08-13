@@ -4,9 +4,6 @@
 # that being they are needed only in THIS Python 16bit CPU
 
 def pushToTuple(array, bits):
-    # invert bits to make trailing zeros important
-    # example 1,0,0, 0... is 4 but will not be recognised
-    # vs 0, 0, 1, 0...
     bits = [int(bit) for bit in bin(bits)[2:]][::-1]
     for index, _ in enumerate(bits):
         array[index] = bits[index]
@@ -32,15 +29,15 @@ def generateStreamBits(bit):
     else:
         return 0b0000000000000000
 
-def tupleToBinary(binary_tuple):
-    return int(''.join([str(value) for value in binary_tuple]), 2)
+def tupleToBinary(tuple_binary):
+    return int(''.join([str(value) for value in tuple_binary]), 2)
 
 def decimalToBinary(integer):
     return int(bin(integer)[2:], 2)
 
-def isLessThanZero(binary_tuple):
-    return binary_tuple[0]
+def isLessThanZero(tuple_binary):
+    return tuple_binary[0]
 
-def reverseBits(binary_tuple):
-    return binary_tuple[::-1]
+def reverseBits(tuple_binary):
+    return tuple_binary[::-1]
 

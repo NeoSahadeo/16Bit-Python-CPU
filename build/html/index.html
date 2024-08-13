@@ -14,7 +14,7 @@
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Logic Units (units.py)" href="units.html" />
+    <link rel="next" title="Implementation Specific (implspec.py)" href="implspec.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -37,6 +37,17 @@
 <p>A 16-bit CPU built in Python by Neo Sahadeo.</p>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="implspec.html">Implementation Specific (implspec.py)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="implspec.html#utility-functions">Utility Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="implspec.html#push-to-tuple">Push to Tuple</a></li>
+<li class="toctree-l3"><a class="reference internal" href="implspec.html#generate-x-bits">Generate X Bits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="implspec.html#generate-stream-bits">Generate Stream Bits</a></li>
+<li class="toctree-l3"><a class="reference internal" href="implspec.html#tuple-to-binary">Tuple to Binary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="implspec.html#less-than-zero">Less Than Zero</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="units.html">Logic Units (units.py)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="units.html#logic-gates">Logic Gates</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="units.html#nand-gate">NAND GATE</a></li>
@@ -54,6 +65,10 @@
 <li class="toctree-l2"><a class="reference internal" href="units.html#bit-incrementer">16-Bit-Incrementer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="units.html#bit-subtracter">16-Bit-Subtracter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="units.html#switches">Switches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html#logic-unit">Logic Unit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html#arithmetic-unit">Arithmetic Unit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html#alu">ALU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html#conditional-unit">Conditional Unit</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="memory.html">Memory (memory.py)</a><ul>
@@ -65,6 +80,7 @@
 <li class="toctree-l2"><a class="reference internal" href="memory.html#data-latch">Data Latch</a></li>
 <li class="toctree-l2"><a class="reference internal" href="memory.html#data-flip-flop">Data Flip-Flop</a></li>
 <li class="toctree-l2"><a class="reference internal" href="memory.html#registers">Registers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="memory.html#program-counter">Program Counter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="memory.html#random-access-memory">Random Access Memory</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="memory.html#implementing-a-decoder">Implementing a decoder</a></li>
 </ul>
@@ -107,6 +123,7 @@
 
 <h3>Navigation</h3>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="implspec.html">Implementation Specific (implspec.py)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="units.html">Logic Units (units.py)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="memory.html">Memory (memory.py)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="processor.html">Processor (processor.py)</a></li>
@@ -117,7 +134,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="units.html" title="next chapter">Logic Units (units.py)</a></li>
+      <li>Next: <a href="implspec.html" title="next chapter">Implementation Specific (implspec.py)</a></li>
   </ul></li>
 </ul>
 </div>

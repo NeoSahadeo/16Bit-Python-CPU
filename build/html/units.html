@@ -35,7 +35,7 @@
             
   <section id="logic-units-units-py">
 <h1>Logic Units (units.py)<a class="headerlink" href="#logic-units-units-py" title="Link to this heading">¶</a></h1>
-<p>This page explains the inner logic gate setup of the =. To understand information on this page requires a basic understanding of
+<p>This page explains the inner logic gate setup of the Arithmetic and Logic Unit. To understand information on this page requires a basic understanding of
 truth tables and logic gates.</p>
 <section id="logic-gates">
 <span id="id1"></span><h2>Logic Gates<a class="headerlink" href="#logic-gates" title="Link to this heading">¶</a></h2>
@@ -193,6 +193,7 @@ final bit is then inverted in and AND.</p>
 <p>Implementing a 16-bit versions of the logic gates is as simple as taking
 two 16-bit binary numbers and comparing each index of each value with a
 respective logic gate. Look in <cite>units.py</cite> at line 40 to see the implementation.</p>
+<p>A <cite>16</cite> in the signature means that method uses 16-bit numbers.</p>
 </section>
 </section>
 <section id="half-adder">
@@ -507,20 +508,323 @@ are added.</p>
 </section>
 <section id="bit-adder">
 <h2>16-Bit-Adder<a class="headerlink" href="#bit-adder" title="Link to this heading">¶</a></h2>
-<blockquote>
-<div><p>The 16-Bit-Adder functions in the same way the Multi-Bit-Adder works; where the
+<p>The 16-Bit-Adder functions in the same way the Multi-Bit-Adder works; where the
 high bit is carried over from the previous Full-Adder. Chaining 16 Full-Adders
 together gives you a 16-Bit-Adder. The last high value is dicarded.</p>
-</div></blockquote>
+<p>To use the <code class="docutils literal notranslate"><span class="pre">BitAdder16</span></code> class call it’s method <code class="docutils literal notranslate"><span class="pre">add</span></code>.</p>
+<p>It takes in two <cite>16-bit binary number</cite> arguments.</p>
+<p>The return value is the added result <cite>16-bit tuple result</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bitadder_16</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="mb">0b11</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>The output of the basic 16-bit units will return tuple values as
+it keeps the virtual pins seperate.
+A utility function is implemented to convert tuples to binary values.
+<span class="xref std std-ref">tuple-to-binary</span></p>
+</div>
 </section>
 <section id="bit-incrementer">
-<h2>16-Bit-Incrementer<a class="headerlink" href="#bit-incrementer" title="Link to this heading">¶</a></h2>
+<span id="increment-16"></span><h2>16-Bit-Incrementer<a class="headerlink" href="#bit-incrementer" title="Link to this heading">¶</a></h2>
+<p>A 16-bit increment can be built be connecting a 16-Bit-Adder to a constant signal; <cite>1</cite>.
+Then we need to take in a 16-bit binary number (<cite>optionally</cite>) to tell the incrementer
+where to start.</p>
+<p>To use the <code class="docutils literal notranslate"><span class="pre">Incremenet16</span></code> class call it’s method <code class="docutils literal notranslate"><span class="pre">inc</span></code>.</p>
+<p>It takes in an <cite>optional</cite> argument of a <cite>16-bit binary number</cite>.</p>
+<p>The return value is the <cite>incremented tuple value</cite>.</p>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>A full 16-bit number is not required. The <code class="docutils literal notranslate"><span class="pre">inc</span></code> method implements the <code class="docutils literal notranslate"><span class="pre">BitAdder16</span></code>
+class which implements 16 Full-Adders. If you recall, there is a utility function in
+this method to generate 16 bits where the bits are n &lt; 17.</p>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">increment_16</span><span class="o">.</span><span class="n">inc</span><span class="p">()</span>
+<span class="n">Output</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">increment_16</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="mb">0b101</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="bit-subtracter">
 <h2>16-Bit-Subtracter<a class="headerlink" href="#bit-subtracter" title="Link to this heading">¶</a></h2>
+<p>The 16-Bit-Subtracter subtracts two 16-bit numbers. It supports negative numbers.
+If a binary number starts with a ‘1’ that signals that this binary number is negative.
+This is known as “Two’s Complement” (Learn more about <a class="reference external" href="https://en.wikipedia.org/wiki/Two%27s_complement">Two’s Complement</a>)</p>
+<blockquote>
+<div></div></blockquote>
+<p>In order to implement this method we need follows:</p>
+<div class="math notranslate nohighlight">
+\[a - b = c \implies -(a - b) = -c\]</div>
+<div class="math notranslate nohighlight">
+\[-(a-b) = -c \implies (-a)+b = -c\]</div>
+<div class="math notranslate nohighlight">
+\[(-a)+b = -c \implies a + (-b) = c\]</div>
+<p>From the equation above we need an <cite>inverted</cite> number <cite>added</cite> to a normal binary number. <cite>1-bit is
+is added to account for the for the **high** bit in the inverted number (A.K.A Two’s Complement)</cite></p>
+<p><strong>SUBTRACTION TRUTH TABLE</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>NOT B</p></th>
+<th class="head"><p>A + NOT B + 1</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>01</p></td>
+<td><p>01</p></td>
+<td><p>10</p></td>
+<td><p>00</p></td>
+</tr>
+<tr class="row-odd"><td><p>01</p></td>
+<td><p>00</p></td>
+<td><p>11</p></td>
+<td><p>01</p></td>
+</tr>
+<tr class="row-even"><td><p>10</p></td>
+<td><p>11</p></td>
+<td><p>00</p></td>
+<td><p>11</p></td>
+</tr>
+<tr class="row-odd"><td><p>11</p></td>
+<td><p>10</p></td>
+<td><p>01</p></td>
+<td><p>01</p></td>
+</tr>
+</tbody>
+</table>
+<p>The high bit (most significant bit) indicates if the number is negative.</p>
+<p>To use the <code class="docutils literal notranslate"><span class="pre">Subtract16</span></code> class call it’s method <code class="docutils literal notranslate"><span class="pre">sub</span></code>.</p>
+<p>It takes in the <cite>16-bit binary number</cite> arguments.</p>
+<p>The return value is the subtracted result <cite>16-bit tuple result</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subract_16</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mb">0b10</span><span class="p">,</span> <span class="mb">0b1</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">subtract_16</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="mb">0b11</span><span class="p">,</span> <span class="mb">0b100</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
 </section>
 <section id="switches">
-<h2>Switches<a class="headerlink" href="#switches" title="Link to this heading">¶</a></h2>
+<span id="stream-bits"></span><h2>Switches<a class="headerlink" href="#switches" title="Link to this heading">¶</a></h2>
+<p>A <cite>switch</cite> is required to choose between different inputs and outputs.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">select</span></code> method in the <code class="docutils literal notranslate"><span class="pre">Switch</span></code> class controls which input to choose.
+This is done by <cite>inverting</cite> the first stream then discriminating against each
+input. Although callable, the single bit <code class="docutils literal notranslate"><span class="pre">select</span></code> should not be used directly; opt
+in to using the 16 bit variant.</p>
+<p>The 16-bit variant of <code class="docutils literal notranslate"><span class="pre">select</span></code> is called <code class="docutils literal notranslate"><span class="pre">select_16</span></code> and requires to 16-bit
+binary values and a 1-bit stream value.</p>
+<p>The arguments required are two <cite>16-bit binary numbers</cite> and a one <cite>1-bit stream bit</cite>.</p>
+<p>The return value of the 16-bit variant is a <cite>16-bit binary number</cite>.</p>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>Due the implementation of the <span class="xref std std-ref">generate16Bits</span> utility function, the stream
+bit needs to be 16-bits long therefore the stream bit it used to generate
+16 stream bits using the <code class="docutils literal notranslate"><span class="pre">generateStreamBits</span></code> function.</p>
+</div>
+</section>
+<section id="logic-unit">
+<h2>Logic Unit<a class="headerlink" href="#logic-unit" title="Link to this heading">¶</a></h2>
+<p>A <cite>Logic Unit</cite> determines various <cite>truths</cite> or <cite>outputs</cite> of supplied values.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>OP1</p></th>
+<th class="head"><p>OP2</p></th>
+<th class="head"><p>OUTPUT</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>X and Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>X or Y</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>X xor Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>invert X</p></td>
+</tr>
+</tbody>
+</table>
+<p>To use the <code class="docutils literal notranslate"><span class="pre">LogicUnit</span></code> class call it’s method <code class="docutils literal notranslate"><span class="pre">calc</span></code>.</p>
+<p>It takes in two <cite>16-bit binary number</cite> arguments and two <cite>operation codes</cite>.</p>
+<p>The return result is a <cite>16-bit binary number</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">logic_unit</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mb">0b1</span><span class="p">,</span> <span class="mb">0b1</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">1</span>
+
+<span class="n">logic_unit</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mb">0b11</span><span class="p">,</span> <span class="mb">0b100</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">7</span>
+
+<span class="n">logic_unit</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mb">0b100</span><span class="p">,</span> <span class="mb">0b0</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">65531</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Hint</p>
+<p>The output values are <strong>numbers</strong>. The representation does not matter.
+Python will display them as base-10 decimal. The only thing that matters
+with the output is that it is of type <strong>int</strong> (meaning it is an instance of the
+base integer class in Python).</p>
+</div>
+</section>
+<section id="arithmetic-unit">
+<h2>Arithmetic Unit<a class="headerlink" href="#arithmetic-unit" title="Link to this heading">¶</a></h2>
+<p>The <cite>Arithmetic Unit</cite> functions in much the same way as the <cite>Logic Unit</cite>
+except it’s <cite>opcodes</cite> correspond to different actions.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>OP1</p></th>
+<th class="head"><p>OP2</p></th>
+<th class="head"><p>OUTPUT</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>X + Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>X - Y</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>X - 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>X - 1</p></td>
+</tr>
+</tbody>
+</table>
+<p>To use the <code class="docutils literal notranslate"><span class="pre">ArithmeticUnit</span></code> class call it’s method <code class="docutils literal notranslate"><span class="pre">calc</span></code>.</p>
+<p>It takes in two <cite>16-bit binary number</cite> arguments and two <cite>operation codes</cite>.</p>
+<p>The return result is a <cite>16-bit binary number</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">arithmetic</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">,</span> <span class="mb">0b100</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">9</span>
+
+<span class="n">arithmetic</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mb">0b101</span><span class="p">,</span> <span class="mb">0b100</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="alu">
+<h2>ALU<a class="headerlink" href="#alu" title="Link to this heading">¶</a></h2>
+<p>The <cite>ALU</cite> stands for <cite>Arithmetic and Logic Unit</cite>. As you may have guessed, this
+combines the functionality of the <cite>Arithmetic Unit</cite> and the <cite>Logic Unit</cite>.</p>
+<p>This is done by using the <code class="docutils literal notranslate"><span class="pre">Switch</span></code> class method <code class="docutils literal notranslate"><span class="pre">select_16</span></code>.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Arithmetic or Logic</p></th>
+<th class="head"><p>OP1</p></th>
+<th class="head"><p>OP2</p></th>
+<th class="head"><p>16-bits</p></th>
+<th class="head"><p>16-bits</p></th>
+<th class="head"><p>OUTPUT</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>ANY</p></td>
+<td><p>ANY</p></td>
+<td><p>X AND Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>ANY</p></td>
+<td><p>ANY</p></td>
+<td><p>X OR Y</p></td>
+</tr>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>ANY</p></td>
+<td><p>ANY</p></td>
+<td><p>X XOR Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>ANY</p></td>
+<td><p>ANY</p></td>
+<td><p>INVERT X</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>0</p></td>
+<td><p>ANY</p></td>
+<td><p>ANY</p></td>
+<td><p>X + Y</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>ANY</p></td>
+<td><p>ANY</p></td>
+<td><p>X - Y</p></td>
+</tr>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>0</p></td>
+<td><p>ANY</p></td>
+<td><p>ANY</p></td>
+<td><p>X + 1</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>ANY</p></td>
+<td><p>ANY</p></td>
+<td><p>X - 1</p></td>
+</tr>
+</tbody>
+</table>
+<p>A <cite>zero-replace</cite> and <cite>swap</cite> are added in.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><strong>Swap</strong>, switch the places of X and Y</p></li>
+<li><p><strong>Zero-Replace</strong>, switches the output of the first operand to 0</p></li>
+</ul>
+</div></blockquote>
+<p>It takes in two <cite>16-bit binary number</cite> arguments, <strong>four</strong> <cite>operation codes</cite>, and one <cite>1-bit stream bit</cite>
+to choose between the <cite>Logic Unit</cite> and the <cite>Arithmetic Unit</cite>.</p>
+<p>The return result is a <cite>16-bit binary number</cite>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># alu.calc(logic_or_arith, op1, op2, zero_replace, swap, binary_number, binary_number)</span>
+
+<span class="n">alu</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mb">0b11</span><span class="p">,</span> <span class="mb">0b1</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">2</span>
+
+<span class="n">alu</span><span class="o">.</span><span class="n">calc</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mb">0b0</span><span class="p">,</span> <span class="mb">0b0</span><span class="p">)</span>
+<span class="n">Output</span><span class="p">:</span> <span class="mi">65535</span>
+</pre></div>
+</div>
+</section>
+<section id="conditional-unit">
+<h2>Conditional Unit<a class="headerlink" href="#conditional-unit" title="Link to this heading">¶</a></h2>
+<p>The <cite>Conditional Unit</cite> checks if a 16-bit binary number is:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Less than zero</p></li>
+<li><p>Greater than zero</p></li>
+<li><p>Equal to zero</p></li>
+</ul>
+</div></blockquote>
+<p>or any combination in-between. Whether or not the condition is
+true will influence the <a class="reference internal" href="memory.html#program-counter"><span class="std std-ref">Program Counter</span></a> starting value (if
+the value is 1 then the current address at <cite>reigster ‘a’</cite> is used
+as the starting value).</p>
 </section>
 </section>
 
@@ -559,6 +863,10 @@ together gives you a 16-Bit-Adder. The last high value is dicarded.</p>
 <li class="toctree-l2"><a class="reference internal" href="#bit-incrementer">16-Bit-Incrementer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#bit-subtracter">16-Bit-Subtracter</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#switches">Switches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logic-unit">Logic Unit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#arithmetic-unit">Arithmetic Unit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alu">ALU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conditional-unit">Conditional Unit</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="memory.html">Memory (memory.py)</a></li>

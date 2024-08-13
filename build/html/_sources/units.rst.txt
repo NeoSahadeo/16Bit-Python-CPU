@@ -1,7 +1,7 @@
 Logic Units (units.py)
 ======================
 
-This page explains the inner logic gate setup of the =. To understand information on this page requires a basic understanding of 
+This page explains the inner logic gate setup of the Arithmetic and Logic Unit. To understand information on this page requires a basic understanding of 
 truth tables and logic gates.
  
 
@@ -115,6 +115,8 @@ final bit is then inverted in and AND.
 Implementing a 16-bit versions of the logic gates is as simple as taking
 two 16-bit binary numbers and comparing each index of each value with a
 respective logic gate. Look in `units.py` at line 40 to see the implementation.
+
+A `16` in the signature means that method uses 16-bit numbers.
 
 
 Half-Adder
@@ -278,17 +280,269 @@ are added.
 16-Bit-Adder
 ************
 
- The 16-Bit-Adder functions in the same way the Multi-Bit-Adder works; where the
- high bit is carried over from the previous Full-Adder. Chaining 16 Full-Adders
- together gives you a 16-Bit-Adder. The last high value is dicarded.
+The 16-Bit-Adder functions in the same way the Multi-Bit-Adder works; where the
+high bit is carried over from the previous Full-Adder. Chaining 16 Full-Adders
+together gives you a 16-Bit-Adder. The last high value is dicarded.
 
+
+To use the ``BitAdder16`` class call it's method ``add``.
+
+It takes in two `16-bit binary number` arguments.
+
+The return value is the added result `16-bit tuple result`.
+
+.. code-block::
+    
+   bitadder_16.add(0b11, 0b101)
+   Output: (0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1)
+
+.. ATTENTION::
+   The output of the basic 16-bit units will return tuple values as
+   it keeps the virtual pins seperate.
+   A utility function is implemented to convert tuples to binary values.
+   :ref:`tuple-to-binary`
+
+.. _increment-16:
 
 16-Bit-Incrementer
 ******************
 
+A 16-bit increment can be built be connecting a 16-Bit-Adder to a constant signal; `1`.
+Then we need to take in a 16-bit binary number (`optionally`) to tell the incrementer
+where to start.
+
+To use the ``Incremenet16`` class call it's method ``inc``.
+
+It takes in an `optional` argument of a `16-bit binary number`.
+
+The return value is the `incremented tuple value`.
+
+.. HINT::
+   A full 16-bit number is not required. The ``inc`` method implements the ``BitAdder16``
+   class which implements 16 Full-Adders. If you recall, there is a utility function in
+   this method to generate 16 bits where the bits are n < 17.
+
+.. code-block::
+    
+   increment_16.inc()
+   Output: (0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1)
+
+   increment_16.inc(0b101)
+   Output: (0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0)
+
+
+
 16-Bit-Subtracter
 *****************
 
+The 16-Bit-Subtracter subtracts two 16-bit numbers. It supports negative numbers.
+If a binary number starts with a '1' that signals that this binary number is negative.
+This is known as "Two's Complement" (Learn more about `Two's Complement`_)
 
+   .. _Two's Complement: https://en.wikipedia.org/wiki/Two%27s_complement
+
+
+In order to implement this method we need follows:
+
+.. math::
+   a - b = c \implies -(a - b) = -c
+
+.. math::
+    -(a-b) = -c \implies (-a)+b = -c 
+
+.. math::
+    (-a)+b = -c \implies a + (-b) = c
+
+From the equation above we need an `inverted` number `added` to a normal binary number. `1-bit is
+is added to account for the for the **high** bit in the inverted number (A.K.A Two's Complement)`
+
+**SUBTRACTION TRUTH TABLE**
+
++----+----+-------+---------------+
+| A  | B  | NOT B | A + NOT B + 1 |
++====+====+=======+===============+
+| 01 | 01 | 10    | 00            |
++----+----+-------+---------------+
+| 01 | 00 | 11    | 01            |
++----+----+-------+---------------+
+| 10 | 11 | 00    | 11            |
++----+----+-------+---------------+
+| 11 | 10 | 01    | 01            |
++----+----+-------+---------------+
+
+The high bit (most significant bit) indicates if the number is negative.
+
+
+To use the ``Subtract16`` class call it's method ``sub``.
+
+It takes in the `16-bit binary number` arguments.
+
+The return value is the subtracted result `16-bit tuple result`.
+
+.. code-block::
+    
+   subract_16.sub(0b10, 0b1)
+   Output: (0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1)
+
+   subtract_16.inc(0b11, 0b100)
+   Output: (1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1)
+
+.. _stream-bits:
+   
 Switches
 ********
+
+A `switch` is required to choose between different inputs and outputs.
+
+The ``select`` method in the ``Switch`` class controls which input to choose.
+This is done by `inverting` the first stream then discriminating against each
+input. Although callable, the single bit ``select`` should not be used directly; opt
+in to using the 16 bit variant.
+
+The 16-bit variant of ``select`` is called ``select_16`` and requires to 16-bit
+binary values and a 1-bit stream value.
+
+The arguments required are two `16-bit binary numbers` and a one `1-bit stream bit`.
+
+The return value of the 16-bit variant is a `16-bit binary number`.
+
+.. ATTENTION::
+   Due the implementation of the :ref:`generate16Bits` utility function, the stream
+   bit needs to be 16-bits long therefore the stream bit it used to generate
+   16 stream bits using the ``generateStreamBits`` function.
+
+
+Logic Unit
+**********
+
+A `Logic Unit` determines various `truths` or `outputs` of supplied values.
+
++-----+-----+----------+
+| OP1 | OP2 | OUTPUT   |
++=====+=====+==========+
+| 0   | 0   | X and Y  |
++-----+-----+----------+
+| 0   | 1   | X or Y   |
++-----+-----+----------+
+| 1   | 0   | X xor Y  |
++-----+-----+----------+
+| 1   | 1   | invert X |
++-----+-----+----------+
+
+To use the ``LogicUnit`` class call it's method ``calc``.
+
+It takes in two `16-bit binary number` arguments and two `operation codes`.
+
+The return result is a `16-bit binary number`.
+
+.. code-block::
+    
+   logic_unit.calc(0, 0, 0b1, 0b1)
+   Output: 1
+
+   logic_unit.calc(0, 1, 0b11, 0b100)
+   Output: 7
+
+   logic_unit.calc(1, 1, 0b100, 0b0)
+   Output: 65531
+
+.. HINT::
+   The output values are **numbers**. The representation does not matter.
+   Python will display them as base-10 decimal. The only thing that matters
+   with the output is that it is of type **int** (meaning it is an instance of the
+   base integer class in Python).
+
+Arithmetic Unit
+***************
+
+The `Arithmetic Unit` functions in much the same way as the `Logic Unit`
+except it's `opcodes` correspond to different actions.
+
++-----+-----+--------+
+| OP1 | OP2 | OUTPUT |
++=====+=====+========+
+| 0   | 0   | X + Y  |
++-----+-----+--------+
+| 0   | 1   | X - Y  |
++-----+-----+--------+
+| 1   | 0   | X - 1  |
++-----+-----+--------+
+| 1   | 1   | X - 1  |
++-----+-----+--------+
+
+To use the ``ArithmeticUnit`` class call it's method ``calc``.
+
+It takes in two `16-bit binary number` arguments and two `operation codes`.
+
+The return result is a `16-bit binary number`.
+
+.. code-block::
+    
+   arithmetic.calc(0, 0, 0b101, 0b100)
+   Output: 9
+
+   arithmetic.calc(1, 0, 0b101, 0b100)
+   Output: 1
+
+
+ALU
+***
+
+The `ALU` stands for `Arithmetic and Logic Unit`. As you may have guessed, this
+combines the functionality of the `Arithmetic Unit` and the `Logic Unit`.
+
+This is done by using the ``Switch`` class method ``select_16``.
+
++---------------------+-----+-----+---------+---------+----------+
+| Arithmetic or Logic | OP1 | OP2 | 16-bits | 16-bits | OUTPUT   |
++=====================+=====+=====+=========+=========+==========+
+| 0                   | 0   | 0   | ANY     | ANY     | X AND Y  |
++---------------------+-----+-----+---------+---------+----------+
+| 0                   | 0   | 1   | ANY     | ANY     | X OR Y   |
++---------------------+-----+-----+---------+---------+----------+
+| 0                   | 1   | 0   | ANY     | ANY     | X XOR Y  |
++---------------------+-----+-----+---------+---------+----------+
+| 0                   | 1   | 1   | ANY     | ANY     | INVERT X |
++---------------------+-----+-----+---------+---------+----------+
+| 1                   | 0   | 0   | ANY     | ANY     | X + Y    |
++---------------------+-----+-----+---------+---------+----------+
+| 1                   | 0   | 1   | ANY     | ANY     | X - Y    |
++---------------------+-----+-----+---------+---------+----------+
+| 1                   | 1   | 0   | ANY     | ANY     | X + 1    |
++---------------------+-----+-----+---------+---------+----------+
+| 1                   | 1   | 1   | ANY     | ANY     | X - 1    |
++---------------------+-----+-----+---------+---------+----------+
+
+A `zero-replace` and `swap` are added in. 
+
+  - **Swap**, switch the places of X and Y
+  - **Zero-Replace**, switches the output of the first operand to 0
+
+It takes in two `16-bit binary number` arguments, **four** `operation codes`, and one `1-bit stream bit`
+to choose between the `Logic Unit` and the `Arithmetic Unit`.
+
+The return result is a `16-bit binary number`.
+
+.. code-block::
+
+   # alu.calc(logic_or_arith, op1, op2, zero_replace, swap, binary_number, binary_number)
+
+   alu.calc(1, 1, 0, 0, 0, 0b11, 0b1)
+   Output: 2
+
+   alu.calc(0, 1, 1, 0, 0, 0b0, 0b0)
+   Output: 65535
+
+Conditional Unit
+****************
+
+The `Conditional Unit` checks if a 16-bit binary number is:
+  
+  - Less than zero
+  - Greater than zero
+  - Equal to zero
+
+or any combination in-between. Whether or not the condition is
+true will influence the :ref:`program-counter` starting value (if
+the value is 1 then the current address at `reigster 'a'` is used
+as the starting value).

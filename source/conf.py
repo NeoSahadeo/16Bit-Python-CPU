@@ -5,16 +5,21 @@
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
+import sys, os
 
-project = 'A 16-bit cpu in Python'
+sys.path.insert(0, os.path.abspath('../cpu'))
+
+project = 'A 16-bit CPU in Python'
 copyright = '2024, Neo Sahadeo'
 author = 'Neo Sahadeo'
-release = '1'
+release = '2'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = [
+    'sphinx.ext.autodoc',
+    ]
 
 templates_path = ['_templates']
 exclude_patterns = []

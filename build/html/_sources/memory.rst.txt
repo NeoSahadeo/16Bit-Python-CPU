@@ -163,6 +163,8 @@ The return value is the `high-bit`.
 The method needs to be called twice. Once with the value wanted to be stored
 when the clock is on low and another to store the value when the clock is high.
 
+.. _storage-locations:
+
 Registers
 *********
 

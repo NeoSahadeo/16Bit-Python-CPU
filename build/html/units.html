@@ -5,17 +5,17 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Logic Units (units.py) &#8212; A 16-bit cpu in Python 1 documentation</title>
+    <title>Logic Units (units.py) &#8212; A 16-bit CPU in Python 2 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+    <script src="_static/documentation_options.js?v=1e5e4989"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Memory (memory.py)" href="memory.html" />
-    <link rel="prev" title="16-bit CPU built in Python documentation" href="index.html" />
+    <link rel="prev" title="Implementation Specific (implspec.py)" href="implspec.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -69,9 +69,8 @@ derived from the <strong>NAND</strong> gate.</p>
 </tr>
 </tbody>
 </table>
-<p>The simplest method in which this is implemented in Python is:
-I use the <cite>&amp;</cite> binary operater as other solution involved <strong>if</strong>’s
-which didn’t seem as elegant.</p>
+<p>The simplest way in which this is implemented in Python is:</p>
+<p>Is the use of the <cite>&amp;</cite> binary operater:</p>
 <div class="math notranslate nohighlight">
 \[bit = -1 \cdot (int(a \&amp; b) - 1)\]</div>
 </section>
@@ -523,7 +522,7 @@ together gives you a 16-Bit-Adder. The last high value is dicarded.</p>
 <p>The output of the basic 16-bit units will return tuple values as
 it keeps the virtual pins seperate.
 A utility function is implemented to convert tuples to binary values.
-<span class="xref std std-ref">tuple-to-binary</span></p>
+<a class="reference internal" href="implspec.html#tuple-to-binary"><span class="std std-ref">Tuple to Binary</span></a></p>
 </div>
 </section>
 <section id="bit-incrementer">
@@ -562,8 +561,7 @@ This is known as “Two’s Complement” (Learn more about <a class="reference 
 \[-(a-b) = -c \implies (-a)+b = -c\]</div>
 <div class="math notranslate nohighlight">
 \[(-a)+b = -c \implies a + (-b) = c\]</div>
-<p>From the equation above we need an <cite>inverted</cite> number <cite>added</cite> to a normal binary number. <cite>1-bit is
-is added to account for the for the **high** bit in the inverted number (A.K.A Two’s Complement)</cite></p>
+<p>From the equation above we need an <cite>inverted</cite> number <cite>added</cite> to a normal binary number.</p>
 <p><strong>SUBTRACTION TRUTH TABLE</strong></p>
 <table class="docutils align-default">
 <thead>
@@ -621,7 +619,7 @@ binary values and a 1-bit stream value.</p>
 <p>The return value of the 16-bit variant is a <cite>16-bit binary number</cite>.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
-<p>Due the implementation of the <span class="xref std std-ref">generate16Bits</span> utility function, the stream
+<p>Due the implementation of the <a class="reference internal" href="implspec.html#generate-bits"><span class="std std-ref">Generate X Bits</span></a> utility function, the stream
 bit needs to be 16-bits long therefore the stream bit it used to generate
 16 stream bits using the <code class="docutils literal notranslate"><span class="pre">generateStreamBits</span></code> function.</p>
 </div>
@@ -718,7 +716,7 @@ except it’s <cite>opcodes</cite> correspond to different actions.</p>
 </div>
 </section>
 <section id="alu">
-<h2>ALU<a class="headerlink" href="#alu" title="Link to this heading">¶</a></h2>
+<span id="id2"></span><h2>ALU<a class="headerlink" href="#alu" title="Link to this heading">¶</a></h2>
 <p>The <cite>ALU</cite> stands for <cite>Arithmetic and Logic Unit</cite>. As you may have guessed, this
 combines the functionality of the <cite>Arithmetic Unit</cite> and the <cite>Logic Unit</cite>.</p>
 <p>This is done by using the <code class="docutils literal notranslate"><span class="pre">Switch</span></code> class method <code class="docutils literal notranslate"><span class="pre">select_16</span></code>.</p>
@@ -812,7 +810,7 @@ to choose between the <cite>Logic Unit</cite> and the <cite>Arithmetic Unit</cit
 </div>
 </section>
 <section id="conditional-unit">
-<h2>Conditional Unit<a class="headerlink" href="#conditional-unit" title="Link to this heading">¶</a></h2>
+<span id="direct-a-register-write"></span><h2>Conditional Unit<a class="headerlink" href="#conditional-unit" title="Link to this heading">¶</a></h2>
 <p>The <cite>Conditional Unit</cite> checks if a 16-bit binary number is:</p>
 <blockquote>
 <div><ul class="simple">
@@ -835,7 +833,7 @@ as the starting value).</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">A 16-bit cpu in Python</a></h1>
+<h1 class="logo"><a href="index.html">A 16-bit CPU in Python</a></h1>
 
 
 
@@ -846,6 +844,7 @@ as the starting value).</p>
 
 <h3>Navigation</h3>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="implspec.html">Implementation Specific (implspec.py)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Logic Units (units.py)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#logic-gates">Logic Gates</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#nand-gate">NAND GATE</a></li>
@@ -872,13 +871,14 @@ as the starting value).</p>
 <li class="toctree-l1"><a class="reference internal" href="memory.html">Memory (memory.py)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="processor.html">Processor (processor.py)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="main.html">Main (main.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">16-bit CPU built in Python documentation</a></li>
+      <li>Previous: <a href="implspec.html" title="previous chapter">Implementation Specific (implspec.py)</a></li>
       <li>Next: <a href="memory.html" title="next chapter">Memory (memory.py)</a></li>
   </ul></li>
 </ul>

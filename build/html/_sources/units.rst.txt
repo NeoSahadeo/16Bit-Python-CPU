@@ -28,13 +28,12 @@ NAND GATE
 | 1 | 1 | 0   |
 +---+---+-----+
 
-The simplest method in which this is implemented in Python is:
-I use the `&` binary operater as other solution involved **if**'s
-which didn't seem as elegant.
+The simplest way in which this is implemented in Python is:
+
+Is the use of the `&` binary operater:
 
 .. math::
    bit = -1 \cdot (int(a \& b) - 1)
-
 
 
 INVERTED GATE
@@ -353,8 +352,10 @@ In order to implement this method we need follows:
 .. math::
     (-a)+b = -c \implies a + (-b) = c
 
-From the equation above we need an `inverted` number `added` to a normal binary number. `1-bit is
-is added to account for the for the **high** bit in the inverted number (A.K.A Two's Complement)`
+From the equation above we need an `inverted` number `added` to a normal binary number.
+
+.. `1-bit is
+.. is added to account for the for the high bit in the inverted number (A.K.A Two's Complement)`
 
 **SUBTRACTION TRUTH TABLE**
 
@@ -407,7 +408,7 @@ The arguments required are two `16-bit binary numbers` and a one `1-bit stream b
 The return value of the 16-bit variant is a `16-bit binary number`.
 
 .. ATTENTION::
-   Due the implementation of the :ref:`generate16Bits` utility function, the stream
+   Due the implementation of the :ref:`generate-bits` utility function, the stream
    bit needs to be 16-bits long therefore the stream bit it used to generate
    16 stream bits using the ``generateStreamBits`` function.
 
@@ -485,6 +486,8 @@ The return result is a `16-bit binary number`.
    Output: 1
 
 
+.. _alu:
+
 ALU
 ***
 
@@ -532,6 +535,8 @@ The return result is a `16-bit binary number`.
 
    alu.calc(0, 1, 1, 0, 0, 0b0, 0b0)
    Output: 65535
+
+.. _direct-a-register-write:
 
 Conditional Unit
 ****************

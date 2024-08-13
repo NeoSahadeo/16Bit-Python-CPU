@@ -2,8 +2,8 @@ Implementation Specific (implspec.py)
 =====================================
 
 
-This page contains informations about the :ref:`utility` functions
-needed to operated the CPU such as generating bits, inverting bits,
+This page contains information about the :ref:`utility`
+needed to operate the CPU such as generating bits, inverting bits,
 bit and reading bits.
 
 .. _utility:
@@ -20,6 +20,9 @@ Push to Tuple
 
 `Push to tuple` takes in an `n` sized array of binary values and
 creates a tuple of binary values **Tuple-binary**.
+
+.. autofunction:: implspec.pushToTuple
+   :no-index:
 
 .. TIP::
    The bits are reversed to make trailing zeros important
@@ -76,6 +79,8 @@ Call the function ``generateStreamBits`` and provide one 1-bit value.
     
     generateStreamBits(1)
     Output: 65535 # decimal representation
+
+.. _tuple-to-binary:
 
 Tuple to Binary
 ---------------

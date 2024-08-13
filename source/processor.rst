@@ -61,9 +61,7 @@ Instruction Module
 
 A 16-bit number is generated **by-you** which turns off and on bits
 that correspond to internal `bindings` to sub-modules in the :ref:`alu`,
-:ref:`storage-location`, and :ref:`direct-a-register-write`
-
-:ref:`alu-op-codes` is not required to understand this section but it will help.
+:ref:`storage-locations`, and :ref:`direct-a-register-write`
 
 +-----------------------------------------+------------+
 | INSTRUCTION SET                         |            |
@@ -139,6 +137,8 @@ The return value will be the *alu output*, *conditional check*, *register 'a' se
      unified_memory.a_register.read(),
      unified_memory.b_register.read(),
      unified_memory.ram.read(unified_memory.a_register.read()))
+
+.. _processor-control-module:
 
 Control Module
 **************

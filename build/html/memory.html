@@ -5,10 +5,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Memory (memory.py) &#8212; A 16-bit cpu in Python 1 documentation</title>
+    <title>Memory (memory.py) &#8212; A 16-bit CPU in Python 2 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=29a6c3e3"></script>
+    <script src="_static/documentation_options.js?v=1e5e4989"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -49,7 +49,7 @@ read/write header to store data. These storage methods are <em>non-volatile</em>
 <h3>Volatile and Non-volatile<a class="headerlink" href="#volatile-and-non-volatile" title="Link to this heading">¶</a></h3>
 <p>Volatility of memory decribes whether constant electrical flow is required to maintain
 memory. <strong>RAM</strong> as you may have heard is a volatile memory type. It only exists while
-the computer is running. As you’ll read in <a class="reference internal" href="processor.html#processor-instruction-module"><span class="std std-ref">Instruction Module</span></a> RAM
+the computer is running. As you’ll read in <span class="xref std std-ref">processor-instruction-module</span> RAM
 can only be addressed using the <cite>register ‘a’</cite>.</p>
 <p>RAM looses charge over time which
 requires it to be constantly refreshed. This refresh rate gives way to SRAM and DRAM.
@@ -214,7 +214,7 @@ wanting to modifiy a specific register.</p>
 when the clock is on low and another to store the value when the clock is high.</p>
 </section>
 <section id="registers">
-<h2>Registers<a class="headerlink" href="#registers" title="Link to this heading">¶</a></h2>
+<span id="storage-locations"></span><h2>Registers<a class="headerlink" href="#registers" title="Link to this heading">¶</a></h2>
 <p>A register is a group of data flip-flops. Since this is a 16-bit CPU, the register
 will have 16 data flip-flops.</p>
 <p>The <strong>read</strong> method requires no arguments and returns the currently stored value
@@ -759,7 +759,7 @@ to run, let alone write. I opted to just use and array with <code class="docutil
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="Main">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">A 16-bit cpu in Python</a></h1>
+<h1 class="logo"><a href="index.html">A 16-bit CPU in Python</a></h1>
 
 
 
@@ -770,7 +770,7 @@ to run, let alone write. I opted to just use and array with <code class="docutil
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="implspec.html">Implementation Specific Functions (implspec.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="implspec.html">Implementation Specific (implspec.py)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="units.html">Logic Units (units.py)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Memory (memory.py)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#what-is-memory">What is ‘memory’</a><ul>
@@ -790,6 +790,7 @@ to run, let alone write. I opted to just use and array with <code class="docutil
 </li>
 <li class="toctree-l1"><a class="reference internal" href="processor.html">Processor (processor.py)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="main.html">Main (main.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
 </ul>
 
 <div class="relations">

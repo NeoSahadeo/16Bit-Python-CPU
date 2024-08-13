@@ -7,26 +7,55 @@ class LogicGates:
     # The logic gates are built with Python operations
     # and are all extended from NAND
     def nand_gate(self, a, b):
+        """
+        :param int a: Binary value.
+        :param int b: Binary value.
+
+        :return: Binary value of type int.
+        """
         # This is the simplest I wanted to make it.
         bit = -1 * (int(a & b) - 1)
         return bit
 
     def invert(self, a):
+        """
+        :param int a: Binary value.
+
+        :return: Binary value of type int.
+        """
         bit = self.nand_gate(a, a)
         return bit
 
     def and_gate(self, a, b):
+        """
+        :param int a: Binary value.
+        :param int b: Binary value.
+
+        :return: Binary value of type int.
+        """
         bit = self.nand_gate(a, b)
         inv_bit = self.invert(bit)
         return inv_bit
 
     def or_gate(self, a, b):
+        """
+        :param int a: Binary value.
+        :param int b: Binary value.
+
+        :return: Binary value of type int.
+        """
         inv_a = self.invert(a)
         inv_b = self.invert(b)
         bit = self.nand_gate(inv_a, inv_b)
         return bit
 
     def xor_gate(self, a, b):
+        """
+        :param int a: Binary value.
+        :param int b: Binary value.
+
+        :return: Binary value of type int.
+        """
         nand_comb = self.nand_gate(a, b)
         nand_comb_a = self.nand_gate(nand_comb, a)
         nand_comb_b = self.nand_gate(nand_comb, b)
@@ -38,6 +67,12 @@ class LogicGates16:
         self.logic_gates = LogicGates()
 
     def nand_gate(self, bits16_one, bits16_two):
+        """
+        :param int bits16_one: 16-bit binary value.
+        :param int bits16_two: 16-bit binary value.
+
+        :return: Tuple-Binary value of type tuple.
+        """
         bytes_one = generate16Bits(bits16_one)
         bytes_two = generate16Bits(bits16_two)
         g1 = self.logic_gates.nand_gate(bytes_one[0], bytes_two[0])
@@ -59,17 +94,35 @@ class LogicGates16:
         return tupleToBinary((g16,g15,g14,g13,g12,g11,g10,g9,g8,g7,g6,g5,g4,g3,g2,g1))
 
     def and_gate(self, bits16_one, bits16_two):
+        """
+        :param int bits16_one: 16-bit binary value.
+        :param int bits16_two: 16-bit binary value.
+
+        :return: Tuple-Binary value of type tuple.
+        """
         inv_nand = self.nand_gate(bits16_one, bits16_two)
         and_gate = self.invert(inv_nand)
         return and_gate
 
     def or_gate(self, bits16_one, bits16_two):
+        """
+        :param int bits16_one: 16-bit binary value.
+        :param int bits16_two: 16-bit binary value.
+
+        :return: Tuple-Binary value of type tuple.
+        """
         inv_one = self.invert(bits16_one)
         inv_two = self.invert(bits16_two)
         or_gate = self.nand_gate(inv_one, inv_two)
         return or_gate
 
     def xor_gate(self, bits16_one, bits16_two):
+        """
+        :param int bits16_one: 16-bit binary value.
+        :param int bits16_two: 16-bit binary value.
+
+        :return: Tuple-Binary value of type tuple.
+        """
         nand_comb = self.nand_gate(bits16_one, bits16_two)
         nand_comb_a = self.nand_gate(nand_comb, bits16_one)
         nand_comb_b = self.nand_gate(nand_comb, bits16_two)
@@ -77,6 +130,11 @@ class LogicGates16:
         return xor_gate
 
     def invert(self, bits16):
+        """
+        :param int bits16: 16-bit binary value.
+
+        :return: Tuple-Binary value of type tuple.
+        """
         inv = self.nand_gate(bits16, bits16)
         return inv
 
@@ -86,6 +144,12 @@ class HalfAdder:
 
     # Half-adders add two bits together.
     def add(self, a, b):
+        """
+        :param int a: Binary value.
+        :param int b: Binary value.
+
+        :return: (high_bit, low_bit).
+        """
         nand_comb = self.logic_gates.nand_gate(a, b)
         nand_comb_a = self.logic_gates.nand_gate(nand_comb, a)
         nand_comb_b = self.logic_gates.nand_gate(nand_comb, b)
@@ -101,19 +165,35 @@ class FullAdder:
         self.half_adder = HalfAdder()
 
     def add(self, a, b, carry):
+        """
+        :param int a: Binary value.
+        :param int b: Binary value.
+        :param int carry: Binary value.
+
+        :return: (high_bit, low_bit).
+        """
         high_one, low_one = self.half_adder.add(a, b)
         high_two, low_two = self.half_adder.add(low_one, carry)
         high_bit = self.logic_gates.or_gate(high_two, high_one)
         low_bit = low_two
         return (high_bit, low_bit)
 
-class MultbitAdder:
+class MultiBitAdder:
     # The multibit adder is how the fundementals of 16bit
     # adder works
     def __init__(self):
         self.full_adder= FullAdder()
 
     def add(self, a1, a2, b1, b2, carry):
+        """
+        :param int a1: Binary value.
+        :param int a2: Binary value.
+        :param int b1: Binary value.
+        :param int b2: Binary value.
+        :param int carry: Binary value.
+
+        :return: (carry, low_two, low_one).
+        """
         high_one, low_one = self.full_adder(a2, b2, carry)
         high_two, low_two = self.full_adder(a1, b1, high_one)
         carry = high_two
@@ -125,6 +205,13 @@ class BitAdder16:
         self.full_adder = FullAdder()
 
     def add(self, bits16_one, bits16_two, carry):
+        """
+        :param int bits16_one: 16-bit binary value.
+        :param int bits16_two: 16-bit binary value.
+        :param int carry: Binary value.
+
+        :return: Tuple-Binary result of type tuple.
+        """
         byte_one = generate16Bits(bits16_one)
         byte_two = generate16Bits(bits16_two)
 

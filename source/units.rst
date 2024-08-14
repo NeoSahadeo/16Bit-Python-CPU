@@ -1,5 +1,5 @@
-Logic Units (units.py)
-======================
+Units (units.py)
+================
 
 This page explains the inner logic gate setup of the Arithmetic and Logic Unit. To understand information on this page requires a basic understanding of 
 truth tables and logic gates.
@@ -10,7 +10,7 @@ truth tables and logic gates.
 Logic Gates
 ***********
 
-This is the most fundemental section in the CPU. All logic gates can be
+This is the most fundamental section in the CPU. All logic gates can be
 derived from the **NAND** gate.
 
 NAND GATE
@@ -30,7 +30,7 @@ NAND GATE
 
 The simplest way in which this is implemented in Python is:
 
-Is the use of the `&` binary operater:
+Is the use of the `&` binary operator:
 
 .. math::
    bit = -1 \cdot (int(a \& b) - 1)
@@ -89,7 +89,7 @@ the inverted inputs into a NAND gate.
 EXCLUSIVE OR GATE (XOR)
 -----------------------
 
-The XOR gate descriminates based on the input side. To create
+The XOR gate discriminates based on the input side. To create
 one, inputs are fed into a NAND gate. The output of this gate
 is discriminated against the NAND of either A or B where the
 final bit is then inverted in and AND.
@@ -297,7 +297,7 @@ The return value is the added result `16-bit tuple result`.
 
 .. ATTENTION::
    The output of the basic 16-bit units will return tuple values as
-   it keeps the virtual pins seperate.
+   it keeps the virtual pins separate.
    A utility function is implemented to convert tuples to binary values.
    :ref:`tuple-to-binary`
 
@@ -310,7 +310,7 @@ A 16-bit increment can be built be connecting a 16-Bit-Adder to a constant signa
 Then we need to take in a 16-bit binary number (`optionally`) to tell the incrementer
 where to start.
 
-To use the ``Incremenet16`` class call it's method ``inc``.
+To use the ``Increment16`` class call it's method ``inc``.
 
 It takes in an `optional` argument of a `16-bit binary number`.
 
@@ -382,7 +382,7 @@ The return value is the subtracted result `16-bit tuple result`.
 
 .. code-block::
     
-   subract_16.sub(0b10, 0b1)
+   subtract_16.sub(0b10, 0b1)
    Output: (0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1)
 
    subtract_16.inc(0b11, 0b100)

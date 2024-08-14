@@ -22,7 +22,7 @@ The value in `register 'a'` is used as the memory location for the :ref:`ram`.
 
 In the ``UnifiedMemory`` class there are read and write methods.
 
-The **read** method takes no arguments and will return current values:
+The **read** method takes no arguments and returns current values:
 
 .. code-block::
 
@@ -101,12 +101,12 @@ that correspond to internal `bindings` to sub-modules in the :ref:`alu`,
 
 The *empty rows* are intentional. Each instruction must be exactly
 16-bits long. Each bit corresponds to an action that the :ref:`alu`
-must work out (except if bit 16 is 1, in that case it's a direct write
+must perform out (except if bit 16 is 1, in that case it's a direct write
 to register 'a').
 
 .. TIP::
-   Remember, we read binary backwards when transcribing it horizontally.
-   Where the last row in a table it the first bit and vice-verca. In Python,
+   Remember, we read binary backwards when transcribing it horizontally, 
+   where the last row in a table is the first bit and vice versa. In Python,
    we prepend a ``0b`` to the front to indicate that it is a binary number.
 
 
@@ -144,7 +144,7 @@ Control Module
 **************
 
 The control module functions in much the same way as the instruction module.
-The main difference between the ability to use a **data instruction** (which
+The main difference is the ability to use a **data instruction** (which
 is a fancy way to say `write this number to register 'a'`)
 
 All the arguments and return values are identical except the *16th* bit in 

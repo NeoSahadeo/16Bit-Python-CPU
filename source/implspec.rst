@@ -11,7 +11,7 @@ bit and reading bits.
 Utility Functions
 *****************
 
-These functions exist due the the implementation in Python and to
+These functions exist due to the implementation in Python and to
 make testing the functions and methods easier. The logic remains
 the same without these functions.
 
@@ -32,8 +32,8 @@ creates a tuple of binary values **Tuple-binary**.
    to a tuple it will be ``(0,0,1,...)``
 
 .. HINT::
-   Tuple-binary values are always in reverse binary order. Where the 
-   left most bit is the least and the vice-versa.
+   Tuple-binary values are always in reverse binary order,
+   where the leftmost bit is the least significant and vice-versa.
 
 .. _generate-bits:
 
@@ -61,7 +61,7 @@ Returns a tuple-binary of size `n`.
 Generate Stream Bits
 --------------------
 
-Due the implementation of the :ref:`generate-bits`, the 16-bit variant of :ref:`stream-bits`
+Due to the implementation of the :ref:`generate-bits`, the 16-bit variant of :ref:`stream-bits`
 needs to be of size 16.
 
 Where the function does this:

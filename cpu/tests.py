@@ -87,7 +87,7 @@ class TestAdders(unittest.TestCase):
         self.full_adder = FullAdder()
         # multibit adder skipped
         self.bit_adder_16 = BitAdder16()
-        self.increment_16 = Incremenet16()
+        self.increment_16 = Increment16()
         self.subtract_16 = Subtract16()
 
     def test_half_adder(self):

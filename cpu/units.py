@@ -234,10 +234,15 @@ class BitAdder16:
         high_bit = h16
         return (l16,l15,l14,l13,l12,l11,l10,l9,l8,l7,l6,l5,l4,l3,l2,l1)
 
-class Incremenet16:
+class Increment16:
     def __init__(self):
         self.bit_adder_16 = BitAdder16()
     def inc(self, bits16 = 0b0):
+        """
+        :param int bits16: 16-bit binary value (optional).
+
+        :return: Tuple-Binary result of type tuple.
+        """
         inc_value = self.bit_adder_16.add(bits16, 0b0, 1)
         return inc_value
 
@@ -245,8 +250,14 @@ class Subtract16:
     def __init__(self):
         self.logic_gates_16 = LogicGates16()
         self.bit_adder_16 = BitAdder16()
-        self.increment_16 = Incremenet16()
+        self.increment_16 = Increment16()
     def sub(self, bits16_one, bits16_two):
+        """
+        :param int bits16_one: 16-bit binary value.
+        :param int bits16_two: 16-bit binary value.
+
+        :return: Tuple-Binary result of type tuple.
+        """
         inv_two = self.logic_gates_16.invert(bits16_two)
         # sub_value = self.bit_adder_16.add(bits16_one, inv_two, 1)[1:]# dicard carry bit
         sub_value = self.bit_adder_16.add(bits16_one, inv_two, 1)
@@ -260,6 +271,13 @@ class Switch:
         self.logic_gates_16 = LogicGates16()
 
     def select(self, d1, d2, stream):
+        """
+        :param int d1: Binary value.
+        :param int d2: Binary value.
+        :param int stream: Binary value.
+
+        :return: Binary value out.
+        """
         inv_stream = self.logic_gates.invert(stream)
         and_gate_one = self.logic_gates.and_gate(inv_stream, d2)
         and_gate_two = self.logic_gates.and_gate(stream, d1)
@@ -267,12 +285,25 @@ class Switch:
         return stream_out
 
     def switch(self, d, stream):
+        """
+        :param int d1: Binary value.
+        :param int stream: Binary value.
+
+        :return: Tuple-Binary (high_bit, low_bit).
+        """
         inv_stream = self.logic_gates.invert(stream)
         stream_out_one =  self.logic_gates.and_gate(stream, d)
         stream_out_two = self.logic_gates.and_gate(inv_stream, d)
         return (stream_out_one, stream_out_two)
 
     def select_16(self, d1_16bits, d2_16bits, stream):
+        """
+        :param int d1_16bits: 16-bit binary value..
+        :param int d2_16bits: 16-bit binary value..
+        :param int stream: Binary value.
+
+        :return: 16-bit binary of type int.
+        """
         stream_bits = generateStreamBits(stream)
         inv_stream_bits = self.logic_gates_16.invert(stream_bits)
         and_gate_one = self.logic_gates_16.and_gate(inv_stream_bits, d2_16bits)
@@ -286,7 +317,14 @@ class LogicUnit:
         self.switch = Switch()
 
     def calc(self, op1, op2,  bits16_one, bits16_two):
+        """
+        :param int op1: Binary value.
+        :param int op2: Binary value.
+        :param int 16bits_one: 16-bit binary value..
+        :param int 16bits_two: 16-bit binary value..
 
+        :return: 16-bit binary of type int.
+        """
         inv_one = self.logic_gates_16.invert(bits16_one)
         xor_comb = self.logic_gates_16.xor_gate(bits16_one, bits16_two)
         or_comb = self.logic_gates_16.or_gate(bits16_one, bits16_two)
@@ -304,11 +342,14 @@ class ArithmeticUnit:
         self.subtract_16 = Subtract16()
 
     def calc(self, op1, op2,  bits16_one, bits16_two):
-        # Operation Set:
-        # 0 0 = X + Y
-        # 0 1 = X - Y
-        # 1 0 = X + 1
-        # 1 1 = X - 1
+        """
+        :param int op1: Binary value.
+        :param int op2: Binary value.
+        :param int 16bits_one: 16-bit binary value..
+        :param int 16bits_two: 16-bit binary value..
+
+        :return: 16-bit binary of type int.
+        """
         select_one = self.switch.select_16(1, bits16_two, op2)
         add_value = tupleToBinary(self.bit_adder_16.add(bits16_one, select_one, 0))
         sub_value = tupleToBinary(self.subtract_16.sub(bits16_one, select_one))
@@ -323,6 +364,17 @@ class ALU:
         self.switch = Switch()
 
     def calc(self, logic_or_arith, op1, op2, zero_replace, swap, bits16_one, bits16_two):
+        """
+        :param int logic_or_arith: Binary value.
+        :param int op1: Binary value.
+        :param int op2: Binary value.
+        :param int zero_replace: Binary value.
+        :param int swap: Binary value.
+        :param int 16bits_one: 16-bit binary value..
+        :param int 16bits_two: 16-bit binary value..
+
+        :return: 16-bit binary of type int.
+        """
         select_one = self.switch.select_16(bits16_two, bits16_one, swap)
         select_two = self.switch.select_16(bits16_one, bits16_two, swap)
         select_three = self.switch.select_16(0, select_one, zero_replace)
@@ -365,6 +417,14 @@ class Conditions:
         return is_zero
 
     def calc(self, lt, gt, eq, bits16):
+        """
+        :param int lt: Binary value.
+        :param int gt: Binary value.
+        :param int eq: Binary value.
+        :param int 16bits: 16-bit binary value..
+
+        :return: Binary of type int.
+        """
         two_bytes = reverseBits(generate16Bits(bits16))
         neg = isLessThanZero(two_bytes)
         is_zero = self.is_zero_16(bits16)

@@ -1,48 +1,115 @@
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Units (units.py) &mdash; A 16-bit CPU in Python 3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
-    <title>Logic Units (units.py) &#8212; A 16-bit CPU in Python 2 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=1e5e4989"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=ba26cd90"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Memory (memory.py)" href="memory.html" />
-    <link rel="prev" title="Implementation Specific (implspec.py)" href="implspec.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
+    <link rel="next" title="tMemory (memory.py)" href="memory.html" />
+    <link rel="prev" title="Implementation Specific (implspec.py)" href="implspec.html" /> 
+</head>
 
-  
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
 
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
           
+          
+          <a href="index.html" class="icon icon-home">
+            A 16-bit CPU in Python
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="implspec.html">Implementation Specific (implspec.py)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Units (units.py)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#logic-gates">Logic Gates</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#nand-gate">NAND GATE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#inverted-gate">INVERTED GATE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#and-gate">AND GATE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#or-gate">OR GATE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#exclusive-or-gate-xor">EXCLUSIVE OR GATE (XOR)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bit-variants">16-Bit Variants</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#half-adder">Half-Adder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#full-adder">Full-Adder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#multi-bit-adder">Multi-Bit-Adder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bit-adder">16-Bit-Adder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bit-incrementer">16-Bit-Incrementer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bit-subtracter">16-Bit-Subtracter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#switches">Switches</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#logic-unit">Logic Unit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#arithmetic-unit">Arithmetic Unit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#alu">ALU</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#conditional-unit">Conditional Unit</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">tMemory (memory.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="processor.html">Processor (processor.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main (main.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
 
-          <div class="body" role="main">
-            
-  <section id="logic-units-units-py">
-<h1>Logic Units (units.py)<a class="headerlink" href="#logic-units-units-py" title="Link to this heading">¶</a></h1>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">A 16-bit CPU in Python</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Units (units.py)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/units.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="units-units-py">
+<h1>Units (units.py)<a class="headerlink" href="#units-units-py" title="Link to this heading"></a></h1>
 <p>This page explains the inner logic gate setup of the Arithmetic and Logic Unit. To understand information on this page requires a basic understanding of
 truth tables and logic gates.</p>
 <section id="logic-gates">
-<span id="id1"></span><h2>Logic Gates<a class="headerlink" href="#logic-gates" title="Link to this heading">¶</a></h2>
-<p>This is the most fundemental section in the CPU. All logic gates can be
+<span id="id1"></span><h2>Logic Gates<a class="headerlink" href="#logic-gates" title="Link to this heading"></a></h2>
+<p>This is the most fundamental section in the CPU. All logic gates can be
 derived from the <strong>NAND</strong> gate.</p>
 <section id="nand-gate">
-<h3>NAND GATE<a class="headerlink" href="#nand-gate" title="Link to this heading">¶</a></h3>
+<h3>NAND GATE<a class="headerlink" href="#nand-gate" title="Link to this heading"></a></h3>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>A</p></th>
@@ -70,12 +137,12 @@ derived from the <strong>NAND</strong> gate.</p>
 </tbody>
 </table>
 <p>The simplest way in which this is implemented in Python is:</p>
-<p>Is the use of the <cite>&amp;</cite> binary operater:</p>
+<p>Is the use of the <cite>&amp;</cite> binary operator:</p>
 <div class="math notranslate nohighlight">
 \[bit = -1 \cdot (int(a \&amp; b) - 1)\]</div>
 </section>
 <section id="inverted-gate">
-<h3>INVERTED GATE<a class="headerlink" href="#inverted-gate" title="Link to this heading">¶</a></h3>
+<h3>INVERTED GATE<a class="headerlink" href="#inverted-gate" title="Link to this heading"></a></h3>
 <p>This gate can be created by taking NAND where a is both a and b.</p>
 <table class="docutils align-default">
 <thead>
@@ -94,7 +161,7 @@ derived from the <strong>NAND</strong> gate.</p>
 </table>
 </section>
 <section id="and-gate">
-<h3>AND GATE<a class="headerlink" href="#and-gate" title="Link to this heading">¶</a></h3>
+<h3>AND GATE<a class="headerlink" href="#and-gate" title="Link to this heading"></a></h3>
 <p>The AND gate is an inverted NAND.</p>
 <table class="docutils align-default">
 <thead>
@@ -124,7 +191,7 @@ derived from the <strong>NAND</strong> gate.</p>
 </table>
 </section>
 <section id="or-gate">
-<h3>OR GATE<a class="headerlink" href="#or-gate" title="Link to this heading">¶</a></h3>
+<h3>OR GATE<a class="headerlink" href="#or-gate" title="Link to this heading"></a></h3>
 <p>The OR gate is created by inverting both inputs then passing
 the inverted inputs into a NAND gate.</p>
 <table class="docutils align-default">
@@ -155,8 +222,8 @@ the inverted inputs into a NAND gate.</p>
 </table>
 </section>
 <section id="exclusive-or-gate-xor">
-<h3>EXCLUSIVE OR GATE (XOR)<a class="headerlink" href="#exclusive-or-gate-xor" title="Link to this heading">¶</a></h3>
-<p>The XOR gate descriminates based on the input side. To create
+<h3>EXCLUSIVE OR GATE (XOR)<a class="headerlink" href="#exclusive-or-gate-xor" title="Link to this heading"></a></h3>
+<p>The XOR gate discriminates based on the input side. To create
 one, inputs are fed into a NAND gate. The output of this gate
 is discriminated against the NAND of either A or B where the
 final bit is then inverted in and AND.</p>
@@ -188,7 +255,7 @@ final bit is then inverted in and AND.</p>
 </table>
 </section>
 <section id="bit-variants">
-<h3>16-Bit Variants<a class="headerlink" href="#bit-variants" title="Link to this heading">¶</a></h3>
+<h3>16-Bit Variants<a class="headerlink" href="#bit-variants" title="Link to this heading"></a></h3>
 <p>Implementing a 16-bit versions of the logic gates is as simple as taking
 two 16-bit binary numbers and comparing each index of each value with a
 respective logic gate. Look in <cite>units.py</cite> at line 40 to see the implementation.</p>
@@ -196,7 +263,7 @@ respective logic gate. Look in <cite>units.py</cite> at line 40 to see the imple
 </section>
 </section>
 <section id="half-adder">
-<h2>Half-Adder<a class="headerlink" href="#half-adder" title="Link to this heading">¶</a></h2>
+<h2>Half-Adder<a class="headerlink" href="#half-adder" title="Link to this heading"></a></h2>
 <p>The Half-Adder is a logical unit that adds two bits together. This will allow
 us to get a maximum value of 3:</p>
 <div class="math notranslate nohighlight">
@@ -238,7 +305,7 @@ of elimination of bits.</p>
 </table>
 </section>
 <section id="full-adder">
-<h2>Full-Adder<a class="headerlink" href="#full-adder" title="Link to this heading">¶</a></h2>
+<h2>Full-Adder<a class="headerlink" href="#full-adder" title="Link to this heading"></a></h2>
 <p>A Full-Adder are two Half-Adders linked together where the value is <cite>allowed</cite> to overflow.
 This overflow is called a carry indicating that the number it too large to fit in the
 current buffer.</p>
@@ -306,7 +373,7 @@ current buffer.</p>
 </table>
 </section>
 <section id="multi-bit-adder">
-<h2>Multi-Bit-Adder<a class="headerlink" href="#multi-bit-adder" title="Link to this heading">¶</a></h2>
+<h2>Multi-Bit-Adder<a class="headerlink" href="#multi-bit-adder" title="Link to this heading"></a></h2>
 <p>The Multi-Bit-Adder are two or more Full-Adders linked where the carry bit of
 the previous Full-Adder is piped into the current Full-Adder; unless it’s the
 last adder, in-that-case the bit is dropped.</p>
@@ -506,7 +573,7 @@ are added.</p>
 </table>
 </section>
 <section id="bit-adder">
-<h2>16-Bit-Adder<a class="headerlink" href="#bit-adder" title="Link to this heading">¶</a></h2>
+<h2>16-Bit-Adder<a class="headerlink" href="#bit-adder" title="Link to this heading"></a></h2>
 <p>The 16-Bit-Adder functions in the same way the Multi-Bit-Adder works; where the
 high bit is carried over from the previous Full-Adder. Chaining 16 Full-Adders
 together gives you a 16-Bit-Adder. The last high value is dicarded.</p>
@@ -520,17 +587,17 @@ together gives you a 16-Bit-Adder. The last high value is dicarded.</p>
 <div class="admonition attention">
 <p class="admonition-title">Attention</p>
 <p>The output of the basic 16-bit units will return tuple values as
-it keeps the virtual pins seperate.
+it keeps the virtual pins separate.
 A utility function is implemented to convert tuples to binary values.
 <a class="reference internal" href="implspec.html#tuple-to-binary"><span class="std std-ref">Tuple to Binary</span></a></p>
 </div>
 </section>
 <section id="bit-incrementer">
-<span id="increment-16"></span><h2>16-Bit-Incrementer<a class="headerlink" href="#bit-incrementer" title="Link to this heading">¶</a></h2>
+<span id="increment-16"></span><h2>16-Bit-Incrementer<a class="headerlink" href="#bit-incrementer" title="Link to this heading"></a></h2>
 <p>A 16-bit increment can be built be connecting a 16-Bit-Adder to a constant signal; <cite>1</cite>.
 Then we need to take in a 16-bit binary number (<cite>optionally</cite>) to tell the incrementer
 where to start.</p>
-<p>To use the <code class="docutils literal notranslate"><span class="pre">Incremenet16</span></code> class call it’s method <code class="docutils literal notranslate"><span class="pre">inc</span></code>.</p>
+<p>To use the <code class="docutils literal notranslate"><span class="pre">Increment16</span></code> class call it’s method <code class="docutils literal notranslate"><span class="pre">inc</span></code>.</p>
 <p>It takes in an <cite>optional</cite> argument of a <cite>16-bit binary number</cite>.</p>
 <p>The return value is the <cite>incremented tuple value</cite>.</p>
 <div class="admonition hint">
@@ -548,7 +615,7 @@ this method to generate 16 bits where the bits are n &lt; 17.</p>
 </div>
 </section>
 <section id="bit-subtracter">
-<h2>16-Bit-Subtracter<a class="headerlink" href="#bit-subtracter" title="Link to this heading">¶</a></h2>
+<h2>16-Bit-Subtracter<a class="headerlink" href="#bit-subtracter" title="Link to this heading"></a></h2>
 <p>The 16-Bit-Subtracter subtracts two 16-bit numbers. It supports negative numbers.
 If a binary number starts with a ‘1’ that signals that this binary number is negative.
 This is known as “Two’s Complement” (Learn more about <a class="reference external" href="https://en.wikipedia.org/wiki/Two%27s_complement">Two’s Complement</a>)</p>
@@ -598,7 +665,7 @@ This is known as “Two’s Complement” (Learn more about <a class="reference 
 <p>To use the <code class="docutils literal notranslate"><span class="pre">Subtract16</span></code> class call it’s method <code class="docutils literal notranslate"><span class="pre">sub</span></code>.</p>
 <p>It takes in the <cite>16-bit binary number</cite> arguments.</p>
 <p>The return value is the subtracted result <cite>16-bit tuple result</cite>.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subract_16</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mb">0b10</span><span class="p">,</span> <span class="mb">0b1</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subtract_16</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="mb">0b10</span><span class="p">,</span> <span class="mb">0b1</span><span class="p">)</span>
 <span class="n">Output</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">subtract_16</span><span class="o">.</span><span class="n">inc</span><span class="p">(</span><span class="mb">0b11</span><span class="p">,</span> <span class="mb">0b100</span><span class="p">)</span>
@@ -607,7 +674,7 @@ This is known as “Two’s Complement” (Learn more about <a class="reference 
 </div>
 </section>
 <section id="switches">
-<span id="stream-bits"></span><h2>Switches<a class="headerlink" href="#switches" title="Link to this heading">¶</a></h2>
+<span id="stream-bits"></span><h2>Switches<a class="headerlink" href="#switches" title="Link to this heading"></a></h2>
 <p>A <cite>switch</cite> is required to choose between different inputs and outputs.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">select</span></code> method in the <code class="docutils literal notranslate"><span class="pre">Switch</span></code> class controls which input to choose.
 This is done by <cite>inverting</cite> the first stream then discriminating against each
@@ -625,7 +692,7 @@ bit needs to be 16-bits long therefore the stream bit it used to generate
 </div>
 </section>
 <section id="logic-unit">
-<h2>Logic Unit<a class="headerlink" href="#logic-unit" title="Link to this heading">¶</a></h2>
+<h2>Logic Unit<a class="headerlink" href="#logic-unit" title="Link to this heading"></a></h2>
 <p>A <cite>Logic Unit</cite> determines various <cite>truths</cite> or <cite>outputs</cite> of supplied values.</p>
 <table class="docutils align-default">
 <thead>
@@ -675,7 +742,7 @@ base integer class in Python).</p>
 </div>
 </section>
 <section id="arithmetic-unit">
-<h2>Arithmetic Unit<a class="headerlink" href="#arithmetic-unit" title="Link to this heading">¶</a></h2>
+<h2>Arithmetic Unit<a class="headerlink" href="#arithmetic-unit" title="Link to this heading"></a></h2>
 <p>The <cite>Arithmetic Unit</cite> functions in much the same way as the <cite>Logic Unit</cite>
 except it’s <cite>opcodes</cite> correspond to different actions.</p>
 <table class="docutils align-default">
@@ -716,7 +783,7 @@ except it’s <cite>opcodes</cite> correspond to different actions.</p>
 </div>
 </section>
 <section id="alu">
-<span id="id2"></span><h2>ALU<a class="headerlink" href="#alu" title="Link to this heading">¶</a></h2>
+<span id="id2"></span><h2>ALU<a class="headerlink" href="#alu" title="Link to this heading"></a></h2>
 <p>The <cite>ALU</cite> stands for <cite>Arithmetic and Logic Unit</cite>. As you may have guessed, this
 combines the functionality of the <cite>Arithmetic Unit</cite> and the <cite>Logic Unit</cite>.</p>
 <p>This is done by using the <code class="docutils literal notranslate"><span class="pre">Switch</span></code> class method <code class="docutils literal notranslate"><span class="pre">select_16</span></code>.</p>
@@ -810,7 +877,7 @@ to choose between the <cite>Logic Unit</cite> and the <cite>Arithmetic Unit</cit
 </div>
 </section>
 <section id="conditional-unit">
-<span id="direct-a-register-write"></span><h2>Conditional Unit<a class="headerlink" href="#conditional-unit" title="Link to this heading">¶</a></h2>
+<span id="direct-a-register-write"></span><h2>Conditional Unit<a class="headerlink" href="#conditional-unit" title="Link to this heading"></a></h2>
 <p>The <cite>Conditional Unit</cite> checks if a 16-bit binary number is:</p>
 <blockquote>
 <div><ul class="simple">
@@ -827,98 +894,34 @@ as the starting value).</p>
 </section>
 
 
+           </div>
           </div>
-          
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="implspec.html" class="btn btn-neutral float-left" title="Implementation Specific (implspec.py)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="memory.html" class="btn btn-neutral float-right" title="tMemory (memory.py)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Neo Sahadeo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">A 16-bit CPU in Python</a></h1>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="implspec.html">Implementation Specific (implspec.py)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Logic Units (units.py)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#logic-gates">Logic Gates</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#nand-gate">NAND GATE</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#inverted-gate">INVERTED GATE</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#and-gate">AND GATE</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#or-gate">OR GATE</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#exclusive-or-gate-xor">EXCLUSIVE OR GATE (XOR)</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#bit-variants">16-Bit Variants</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#half-adder">Half-Adder</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#full-adder">Full-Adder</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#multi-bit-adder">Multi-Bit-Adder</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#bit-adder">16-Bit-Adder</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#bit-incrementer">16-Bit-Incrementer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#bit-subtracter">16-Bit-Subtracter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#switches">Switches</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#logic-unit">Logic Unit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#arithmetic-unit">Arithmetic Unit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#alu">ALU</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#conditional-unit">Conditional Unit</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="memory.html">Memory (memory.py)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="processor.html">Processor (processor.py)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="main.html">Main (main.py)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="implspec.html" title="previous chapter">Implementation Specific (implspec.py)</a></li>
-      <li>Next: <a href="memory.html" title="next chapter">Memory (memory.py)</a></li>
-  </ul></li>
-</ul>
-</div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &#169;2024, Neo Sahadeo.
-      
-      |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
-      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
-      
-      |
-      <a href="_sources/units.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
-    
-
-    
-  </body>
+</body>
 </html>

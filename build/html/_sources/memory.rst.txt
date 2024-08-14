@@ -9,7 +9,7 @@ truth tables and logic gates
 What is 'memory'
 ****************
 
-  Memory is defined loosley as the ability to recall information that is stored somewhere.
+  Memory is defined loosely as the ability to recall information that is stored somewhere.
 
 Computers can't remember anything that isn't hard-coded in hardware. Solid State Drives 
 use mosfets that contruct NAND or NOR gates. Hard Disk Drives use magnetic disks with a
@@ -18,7 +18,7 @@ read/write header to store data. These storage methods are *non-volatile*
 Volatile and Non-volatile
 -------------------------
 
-Volatility of memory decribes whether constant electrical flow is required to maintain
+Volatility of memory describes whether constant electrical flow is required to maintain
 memory. **RAM** as you may have heard is a volatile memory type. It only exists while
 the computer is running. As you'll read in :ref:`processor-instruction-module` RAM
 can only be addressed using the `register 'a'`.
@@ -113,7 +113,7 @@ The return value is the `high-bit`.
 Data Flip-Flop
 ********************
 
-The next priority is fixing race conditions. Currently running Data Lacthes in parallel
+The next priority is fixing race conditions. Currently running Data Latches in parallel
 will result in some latches changing values before others. The is random behaviour and it's
 outcome is undefined.
 
@@ -138,7 +138,7 @@ two data latches together (*master* and *slave* respectively).
 An new value is introduced in the data flip-flop; **store** bit. This
 allows the option to choose whether or not to store the value if a value
 is present. This is useful when switch between different registers but only
-wanting to modifiy a specific register.
+wanting to modiy a specific register.
 
 Using the data method from the ``DataFlipFlop`` class directly:
 
@@ -199,7 +199,7 @@ The return value is the `16_bit_binary`.
 Program Counter
 ***************
 
-The `Program Counter` is a `register` and a :ref:`increment-16` linked togther
+The `Program Counter` is a `register` and a :ref:`increment-16` linked together
 with the option to use a different starting value other than ``0``.
 
 The ``Counter`` class can be used by calling the ``inc`` method.
@@ -250,7 +250,7 @@ The last 9 bits can uniquely all 8 groups of size 512-bits.
 
 0000000 **000000000**
 
-Which gives us a unique binary number that is unambigous
+Which gives us a unique binary number that is unambiguous.
 for all 65536 values.
 
 

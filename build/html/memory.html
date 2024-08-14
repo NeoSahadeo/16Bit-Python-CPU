@@ -1,55 +1,115 @@
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory (memory.py) &mdash; A 16-bit CPU in Python 3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
-    <title>Memory (memory.py) &#8212; A 16-bit CPU in Python 2 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=1e5e4989"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=ba26cd90"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Processor (processor.py)" href="processor.html" />
-    <link rel="prev" title="Logic Units (units.py)" href="units.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
+    <link rel="prev" title="Units (units.py)" href="units.html" /> 
+</head>
 
-  
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
 
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
           
+          
+          <a href="index.html" class="icon icon-home">
+            A 16-bit CPU in Python
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="implspec.html">Implementation Specific (implspec.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units.html">Units (units.py)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Memory (memory.py)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#what-is-memory">What is ‘memory’</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#volatile-and-non-volatile">Volatile and Non-volatile</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#set-reset-latch">Set-Reset Latch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-latch">Data Latch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-flip-flop">Data Flip-Flop</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#registers">Registers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#program-counter">Program Counter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#random-access-memory">Random Access Memory</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#implementing-a-decoder">Implementing a decoder</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="processor.html">Processor (processor.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main (main.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
 
-          <div class="body" role="main">
-            
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">A 16-bit CPU in Python</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Memory (memory.py)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/memory.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="memory-memory-py">
-<h1>Memory (memory.py)<a class="headerlink" href="#memory-memory-py" title="Link to this heading">¶</a></h1>
+<h1>Memory (memory.py)<a class="headerlink" href="#memory-memory-py" title="Link to this heading"></a></h1>
 <p>This explains how memory works in the 16-bit CPU. To understand information on this page requires a basic understanding of
 truth tables and logic gates</p>
 <section id="what-is-memory">
-<span id="memory"></span><h2>What is ‘memory’<a class="headerlink" href="#what-is-memory" title="Link to this heading">¶</a></h2>
+<span id="memory"></span><h2>What is ‘memory’<a class="headerlink" href="#what-is-memory" title="Link to this heading"></a></h2>
 <blockquote>
-<div><p>Memory is defined loosley as the ability to recall information that is stored somewhere.</p>
+<div><p>Memory is defined loosely as the ability to recall information that is stored somewhere.</p>
 </div></blockquote>
 <p>Computers can’t remember anything that isn’t hard-coded in hardware. Solid State Drives
 use mosfets that contruct NAND or NOR gates. Hard Disk Drives use magnetic disks with a
 read/write header to store data. These storage methods are <em>non-volatile</em></p>
 <section id="volatile-and-non-volatile">
-<h3>Volatile and Non-volatile<a class="headerlink" href="#volatile-and-non-volatile" title="Link to this heading">¶</a></h3>
-<p>Volatility of memory decribes whether constant electrical flow is required to maintain
+<h3>Volatile and Non-volatile<a class="headerlink" href="#volatile-and-non-volatile" title="Link to this heading"></a></h3>
+<p>Volatility of memory describes whether constant electrical flow is required to maintain
 memory. <strong>RAM</strong> as you may have heard is a volatile memory type. It only exists while
-the computer is running. As you’ll read in <span class="xref std std-ref">processor-instruction-module</span> RAM
+the computer is running. As you’ll read in <a class="reference internal" href="processor.html#processor-instruction-module"><span class="std std-ref">Instruction Module</span></a> RAM
 can only be addressed using the <cite>register ‘a’</cite>.</p>
 <p>RAM looses charge over time which
 requires it to be constantly refreshed. This refresh rate gives way to SRAM and DRAM.
@@ -64,7 +124,7 @@ in the first place.</p>
 </section>
 </section>
 <section id="set-reset-latch">
-<h2>Set-Reset Latch<a class="headerlink" href="#set-reset-latch" title="Link to this heading">¶</a></h2>
+<h2>Set-Reset Latch<a class="headerlink" href="#set-reset-latch" title="Link to this heading"></a></h2>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>SET</p></th>
@@ -110,7 +170,7 @@ Undefined behaviour means that it’s not specified in the documentation and sho
 </div>
 </section>
 <section id="data-latch">
-<h2>Data Latch<a class="headerlink" href="#data-latch" title="Link to this heading">¶</a></h2>
+<h2>Data Latch<a class="headerlink" href="#data-latch" title="Link to this heading"></a></h2>
 <p>We need to fix make sure that we don’t get undefined behaviour when both set and reset are 1.
 A data latch is a little bit of logic added on top of an SR-Latch to stop both values
 from being equal to eachother.</p>
@@ -152,8 +212,8 @@ the same <cite>enable</cite> bit ensures that we cannot produce a <code class="d
 </div>
 </section>
 <section id="data-flip-flop">
-<h2>Data Flip-Flop<a class="headerlink" href="#data-flip-flop" title="Link to this heading">¶</a></h2>
-<p>The next priority is fixing race conditions. Currently running Data Lacthes in parallel
+<h2>Data Flip-Flop<a class="headerlink" href="#data-flip-flop" title="Link to this heading"></a></h2>
+<p>The next priority is fixing race conditions. Currently running Data Latches in parallel
 will result in some latches changing values before others. The is random behaviour and it’s
 outcome is undefined.</p>
 <p>In order to fix this we need to sync bit updates with a <span class="xref std std-ref">clock-cycle</span>.</p>
@@ -193,7 +253,7 @@ two data latches together (<em>master</em> and <em>slave</em> respectively).</p>
 <p>An new value is introduced in the data flip-flop; <strong>store</strong> bit. This
 allows the option to choose whether or not to store the value if a value
 is present. This is useful when switch between different registers but only
-wanting to modifiy a specific register.</p>
+wanting to modiy a specific register.</p>
 <p>Using the data method from the <code class="docutils literal notranslate"><span class="pre">DataFlipFlop</span></code> class directly:</p>
 <p>Arguments needed are a <cite>store</cite>, <cite>data</cite> and <cite>clock</cite> value.</p>
 <p>The return value is the <cite>high-bit</cite>.</p>
@@ -214,7 +274,7 @@ wanting to modifiy a specific register.</p>
 when the clock is on low and another to store the value when the clock is high.</p>
 </section>
 <section id="registers">
-<span id="storage-locations"></span><h2>Registers<a class="headerlink" href="#registers" title="Link to this heading">¶</a></h2>
+<span id="storage-locations"></span><h2>Registers<a class="headerlink" href="#registers" title="Link to this heading"></a></h2>
 <p>A register is a group of data flip-flops. Since this is a 16-bit CPU, the register
 will have 16 data flip-flops.</p>
 <p>The <strong>read</strong> method requires no arguments and returns the currently stored value
@@ -237,8 +297,8 @@ binary number less than 17 (n &lt; 17); This makes programming tests easier.</p>
 </div>
 </section>
 <section id="program-counter">
-<span id="id1"></span><h2>Program Counter<a class="headerlink" href="#program-counter" title="Link to this heading">¶</a></h2>
-<p>The <cite>Program Counter</cite> is a <cite>register</cite> and a <a class="reference internal" href="units.html#increment-16"><span class="std std-ref">16-Bit-Incrementer</span></a> linked togther
+<span id="id1"></span><h2>Program Counter<a class="headerlink" href="#program-counter" title="Link to this heading"></a></h2>
+<p>The <cite>Program Counter</cite> is a <cite>register</cite> and a <a class="reference internal" href="units.html#increment-16"><span class="std std-ref">16-Bit-Incrementer</span></a> linked together
 with the option to use a different starting value other than <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">Counter</span></code> class can be used by calling the <code class="docutils literal notranslate"><span class="pre">inc</span></code> method.</p>
 <p>The arguments needed are a stream-bit (see <a class="reference internal" href="units.html#stream-bits"><span class="std std-ref">Switches</span></a>), a <cite>16-bit binary number</cite> and a <span class="xref std std-ref">clock-cycle</span></p>
@@ -246,7 +306,7 @@ with the option to use a different starting value other than <code class="docuti
 be the supplied <cite>16-bit binary number</cite> (which comes from <cite>register ‘a’</cite>).</p>
 </section>
 <section id="random-access-memory">
-<span id="ram"></span><h2>Random Access Memory<a class="headerlink" href="#random-access-memory" title="Link to this heading">¶</a></h2>
+<span id="ram"></span><h2>Random Access Memory<a class="headerlink" href="#random-access-memory" title="Link to this heading"></a></h2>
 <p>The method the RAM uses to store values boil down to set-reset latches.</p>
 <p>In order to implement a <strong>randomly</strong> accessible memory the circuitry needs
 a way to tell the difference between bits that have different binary values
@@ -258,7 +318,7 @@ as the number of bits increases.</p>
 <p>A circuit known as a <strong>decoder</strong> is needed to assign a unique address to each bit
 in a 16-bit number to correctly address it.</p>
 <section id="implementing-a-decoder">
-<h3>Implementing a decoder<a class="headerlink" href="#implementing-a-decoder" title="Link to this heading">¶</a></h3>
+<h3>Implementing a decoder<a class="headerlink" href="#implementing-a-decoder" title="Link to this heading"></a></h3>
 <p>The name of the game is <strong>reduction</strong>. Recall the maximum amount of memory addresses allowed by a 16-bit number (assuming all bits are ‘1’):</p>
 <div class="math notranslate nohighlight">
 \[2^{16} = 65535\]</div>
@@ -270,7 +330,7 @@ which gives use 16 groups.</p>
 <p>0000 <strong>000</strong> 000000000</p>
 <p>The last 9 bits can uniquely all 8 groups of size 512-bits.</p>
 <p>0000000 <strong>000000000</strong></p>
-<p>Which gives us a unique binary number that is unambigous
+<p>Which gives us a unique binary number that is unambiguous.
 for all 65536 values.</p>
 <p>I haven’t implemented the <a class="reference internal" href="#ram"><span class="std std-ref">Random Access Memory</span></a> in a ‘true’ sense. I wanted to have <code class="docutils literal notranslate"><span class="pre">64KB</span></code>
 of Random Access Memory but the implementation of hard-coded RAM would be far-fetched
@@ -753,91 +813,34 @@ to run, let alone write. I opted to just use and array with <code class="docutil
 </section>
 
 
+           </div>
           </div>
-          
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="units.html" class="btn btn-neutral float-left" title="Units (units.py)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="processor.html" class="btn btn-neutral float-right" title="Processor (processor.py)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Neo Sahadeo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">A 16-bit CPU in Python</a></h1>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="implspec.html">Implementation Specific (implspec.py)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="units.html">Logic Units (units.py)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Memory (memory.py)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#what-is-memory">What is ‘memory’</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#volatile-and-non-volatile">Volatile and Non-volatile</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#set-reset-latch">Set-Reset Latch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#data-latch">Data Latch</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#data-flip-flop">Data Flip-Flop</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#registers">Registers</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#program-counter">Program Counter</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#random-access-memory">Random Access Memory</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#implementing-a-decoder">Implementing a decoder</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="processor.html">Processor (processor.py)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="main.html">Main (main.py)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="units.html" title="previous chapter">Logic Units (units.py)</a></li>
-      <li>Next: <a href="processor.html" title="next chapter">Processor (processor.py)</a></li>
-  </ul></li>
-</ul>
-</div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &#169;2024, Neo Sahadeo.
-      
-      |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
-      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
-      
-      |
-      <a href="_sources/memory.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
-    
-
-    
-  </body>
+</body>
 </html>

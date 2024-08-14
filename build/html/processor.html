@@ -1,42 +1,92 @@
 <!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<html lang="en" data-content_root="./">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Processor (processor.py) &mdash; A 16-bit CPU in Python 3 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
-    <title>Processor (processor.py) &#8212; A 16-bit CPU in Python 2 documentation</title>
-    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d1102ebc" />
-    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=12dfc556" />
-    <script src="_static/documentation_options.js?v=1e5e4989"></script>
-    <script src="_static/doctools.js?v=9a2dae69"></script>
-    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=ba26cd90"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Main (main.py)" href="main.html" />
-    <link rel="prev" title="Memory (memory.py)" href="memory.html" />
-   
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
+    <link rel="prev" title="tMemory (memory.py)" href="memory.html" /> 
+</head>
 
-  
-  
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
 
-  </head><body>
-  
-
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
           
+          
+          <a href="index.html" class="icon icon-home">
+            A 16-bit CPU in Python
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="implspec.html">Implementation Specific (implspec.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="units.html">Units (units.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="memory.html">tMemory (memory.py)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Processor (processor.py)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#unified-memory">Unified Memory</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#instruction-module">Instruction Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#control-module">Control Module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="main.html">Main (main.py)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+</ul>
 
-          <div class="body" role="main">
-            
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">A 16-bit CPU in Python</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Processor (processor.py)</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/processor.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
   <section id="processor-processor-py">
-<h1>Processor (processor.py)<a class="headerlink" href="#processor-processor-py" title="Link to this heading">¶</a></h1>
+<h1>Processor (processor.py)<a class="headerlink" href="#processor-processor-py" title="Link to this heading"></a></h1>
 <p>The internal workings of the 16-bit processor.</p>
 <section id="unified-memory">
-<span id="id1"></span><h2>Unified Memory<a class="headerlink" href="#unified-memory" title="Link to this heading">¶</a></h2>
+<span id="id1"></span><h2>Unified Memory<a class="headerlink" href="#unified-memory" title="Link to this heading"></a></h2>
 <p>The 16-bit CPU has three <a class="reference internal" href="memory.html#storage-locations"><span class="std std-ref">Registers</span></a>; all of which store 16-bit binary
 numbers.</p>
 <ul class="simple">
@@ -48,7 +98,7 @@ numbers.</p>
 <p>The value in <cite>register ‘a’</cite> is used as the memory location for the <a class="reference internal" href="memory.html#ram"><span class="std std-ref">Random Access Memory</span></a>.
 <cite>Register ‘b’</cite> is used normally.</p>
 <p>In the <code class="docutils literal notranslate"><span class="pre">UnifiedMemory</span></code> class there are read and write methods.</p>
-<p>The <strong>read</strong> method takes no arguments and will return current values:</p>
+<p>The <strong>read</strong> method takes no arguments and returns current values:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">unified_memory</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
 <span class="n">Output</span><span class="p">:</span>
   <span class="p">(</span><span class="n">a_register</span><span class="p">,</span> <span class="n">b_register</span><span class="p">,</span> <span class="n">ram_at_a_register</span><span class="p">)</span>
@@ -75,7 +125,7 @@ arguments.</p>
 </div>
 </section>
 <section id="instruction-module">
-<span id="processor-instruction-module"></span><h2>Instruction Module<a class="headerlink" href="#instruction-module" title="Link to this heading">¶</a></h2>
+<span id="processor-instruction-module"></span><h2>Instruction Module<a class="headerlink" href="#instruction-module" title="Link to this heading"></a></h2>
 <p>A 16-bit number is generated <strong>by-you</strong> which turns off and on bits
 that correspond to internal <cite>bindings</cite> to sub-modules in the <a class="reference internal" href="units.html#alu"><span class="std std-ref">ALU</span></a>,
 <a class="reference internal" href="memory.html#storage-locations"><span class="std std-ref">Registers</span></a>, and <a class="reference internal" href="units.html#direct-a-register-write"><span class="std std-ref">Conditional Unit</span></a></p>
@@ -138,12 +188,12 @@ that correspond to internal <cite>bindings</cite> to sub-modules in the <a class
 </table>
 <p>The <em>empty rows</em> are intentional. Each instruction must be exactly
 16-bits long. Each bit corresponds to an action that the <a class="reference internal" href="units.html#alu"><span class="std std-ref">ALU</span></a>
-must work out (except if bit 16 is 1, in that case it’s a direct write
+must perform out (except if bit 16 is 1, in that case it’s a direct write
 to register ‘a’).</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Remember, we read binary backwards when transcribing it horizontally.
-Where the last row in a table it the first bit and vice-verca. In Python,
+<p>Remember, we read binary backwards when transcribing it horizontally,
+where the last row in a table is the first bit and vice versa. In Python,
 we prepend a <code class="docutils literal notranslate"><span class="pre">0b</span></code> to the front to indicate that it is a binary number.</p>
 </div>
 <p>Calling the <code class="docutils literal notranslate"><span class="pre">calc</span></code> method of the <code class="docutils literal notranslate"><span class="pre">Instruction</span></code> class will return the calculated
@@ -168,9 +218,9 @@ based on the 12th bit.</p>
 </div>
 </section>
 <section id="control-module">
-<span id="processor-control-module"></span><h2>Control Module<a class="headerlink" href="#control-module" title="Link to this heading">¶</a></h2>
+<span id="processor-control-module"></span><h2>Control Module<a class="headerlink" href="#control-module" title="Link to this heading"></a></h2>
 <p>The control module functions in much the same way as the instruction module.
-The main difference between the ability to use a <strong>data instruction</strong> (which
+The main difference is the ability to use a <strong>data instruction</strong> (which
 is a fancy way to say <cite>write this number to register ‘a’</cite>)</p>
 <p>All the arguments and return values are identical except the <em>16th</em> bit in
 the instruction operates to switch between a <strong>data instruction</strong> and an
@@ -179,81 +229,34 @@ the instruction operates to switch between a <strong>data instruction</strong> a
 </section>
 
 
+           </div>
           </div>
-          
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="memory.html" class="btn btn-neutral float-left" title="tMemory (memory.py)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="main.html" class="btn btn-neutral float-right" title="Main (main.py)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Neo Sahadeo.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="Main">
-        <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">A 16-bit CPU in Python</a></h1>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
 
-
-
-
-
-
-
-
-<h3>Navigation</h3>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="implspec.html">Implementation Specific (implspec.py)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="units.html">Logic Units (units.py)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="memory.html">Memory (memory.py)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Processor (processor.py)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#unified-memory">Unified Memory</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#instruction-module">Instruction Module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#control-module">Control Module</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="main.html">Main (main.py)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
-</ul>
-
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="memory.html" title="previous chapter">Memory (memory.py)</a></li>
-      <li>Next: <a href="main.html" title="next chapter">Main (main.py)</a></li>
-  </ul></li>
-</ul>
-</div>
-<search id="searchbox" style="display: none" role="search">
-  <h3 id="searchlabel">Quick search</h3>
-    <div class="searchformwrapper">
-    <form class="search" action="search.html" method="get">
-      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
-      <input type="submit" value="Go" />
-    </form>
-    </div>
-</search>
-<script>document.getElementById('searchbox').style.display = "block"</script>
-
-
-
-
-
-
-
-
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &#169;2024, Neo Sahadeo.
-      
-      |
-      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
-      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
-      
-      |
-      <a href="_sources/processor.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
-
-    
-
-    
-  </body>
+</body>
 </html>

@@ -5,15 +5,23 @@ from units import *
 from memory import *
 
 class UnifiedMemory:
-    """
-    bits16 refers to the store value
-    """
     def __init__(self):
         self.a_register = Register()
         self.b_register = Register()
         self.ram = RAM()
 
     def write(self, a, b, ram, bits16, clock):
+        """
+        Bits16 refers to the store value
+
+        :param int a: Binary value.
+        :param int b: Binary value.
+        :param int ram: Binary value.
+        :param int bits16: 16-bit binary value.
+        :param int clock: Binary value.
+
+        :return: Binary value of type int.
+        """
         self.a_register.write(a, bits16, clock)
         self.b_register.write(b, bits16, clock)
         self.ram.write(ram, self.a_register.read(), bits16, clock)
@@ -34,7 +42,12 @@ class Instruction:
         """
         bits16 refers to the instruction
 
-        Return type:
+        :param int bits16: 16-bit binary value.
+        :param int a_register: 16-bit binary value.
+        :param int b_register: 16-bit binary value.
+        :param int ram: 16-binary value.
+
+        :return:
             alu value,
             conditional is true,
             a register,
@@ -75,7 +88,12 @@ class ControlUnit:
         """
         bits16 refers to the instruction
 
-        Return type:
+        :param int bits16: 16-bit binary value.
+        :param int a_register: 16-bit binary value.
+        :param int b_register: 16-bit binary value.
+        :param int ram: 16-binary value.
+
+        :return:
             output value,
             conditional is true,
             a register,

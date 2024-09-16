@@ -1,7 +1,7 @@
 Memory (memory.py)
 ==================
 
-This explains how memory works in the 16-bit CPU. To understand information on this page requires a basic understanding of 
+This explains how memory works in the 16-bit CPU. To understand information on this page requires a basic understanding of
 truth tables and logic gates
 
 .. _memory:
@@ -11,7 +11,7 @@ What is 'memory'
 
   Memory is defined loosely as the ability to recall information that is stored somewhere.
 
-Computers can't remember anything that isn't hard-coded in hardware. Solid State Drives 
+Computers can't remember anything that isn't hard-coded in hardware. Solid State Drives
 use mosfets that contruct NAND or NOR gates. Hard Disk Drives use magnetic disks with a
 read/write header to store data. These storage methods are *non-volatile*
 
@@ -24,7 +24,11 @@ the computer is running. As you'll read in :ref:`processor-instruction-module` R
 can only be addressed using the `register 'a'`.
 
 RAM looses charge over time which
-requires it to be constantly refreshed. This refresh rate gives way to SRAM and DRAM.
+requires it to be constantly refreshed.
+
+- SRAM(static RAM) is normally made using tranistors which require a constant power flow
+- DRAM(dynamic RAM) is normally made using capacitors which will constantly need to be refreshed
+
 When the power supply it stopped the refresh of the cells stop and the memory is lost;
 hence volatility.
 
@@ -218,11 +222,11 @@ The method the RAM uses to store values boil down to set-reset latches.
 
 In order to implement a **randomly** accessible memory the circuitry needs
 a way to tell the difference between bits that have different binary values
-but still have the same number of bits on. 
+but still have the same number of bits on.
 
 For example, how would a circuit
 tell the difference between ``0b100`` (4 in binary) and ``0b10`` (2 in binary).
-Both of them have the same number of '1' bits and it gets arbitrarily difficult 
+Both of them have the same number of '1' bits and it gets arbitrarily difficult
 as the number of bits increases.
 
 A circuit known as a **decoder** is needed to assign a unique address to each bit
@@ -254,7 +258,7 @@ Which gives us a unique binary number that is unambiguous.
 for all 65536 values.
 
 
-I haven't implemented the :ref:`ram` in a 'true' sense. I wanted to have ``64KB`` 
+I haven't implemented the :ref:`ram` in a 'true' sense. I wanted to have ``64KB``
 of Random Access Memory but the implementation of hard-coded RAM would be far-fetched
 to run, let alone write. I opted to just use and array with ``read`` and ``write`` methods.
 

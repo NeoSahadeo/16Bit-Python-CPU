@@ -23,7 +23,7 @@ The instruction we want to generate:
 +-----------------------------------------+---+---+---+---+
 | INSTRUCTION SET                         | A | B | C | D |
 +=========================================+===+===+===+===+
-| Logic or Arithemtic                     | 0 | 1 | 0 | 1 |
+| Logic or Arithmetic                     | 0 | 1 | 0 | 1 |
 +-----------------------------------------+---+---+---+---+
 | operation code 1                        | 0 | 0 | 0 | 0 |
 +-----------------------------------------+---+---+---+---+
@@ -64,7 +64,7 @@ to `register 'b'`
 Instruction **C** writes the value ``0b10`` (2 in binary) to `register 'a'`
 
 Instruction **D** adds the value in `register 'a'` to the value in `register 'b'`
-then write the value in :ref:`ram`
+then writes the value in :ref:`ram`
 
 .. NOTE::
    The address of **where** to store the value in RAM is determined by the value

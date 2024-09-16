@@ -3,9 +3,12 @@
 
 A 16-bit CPU built in Python by Neo Sahadeo. 
 
-This documentation explains the internal working of the CPU.
+The documentation explains the interal logic of the CPU.
 
-The main Github repository https://neosahadeo.github.io/16Bit-Python-CPU/index.html
+The documentation does not contain circuit diagrams; it does include
+the relevant logic gates.
+
+The main Github repository https://github.com/NeoSahadeo/16Bit-Python-CPU
 
 .. toctree::
 

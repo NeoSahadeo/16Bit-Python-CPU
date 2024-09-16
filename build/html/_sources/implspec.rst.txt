@@ -26,10 +26,12 @@ creates a tuple of binary values **Tuple-binary**.
 
 .. TIP::
    The bits are reversed to make trailing zeros important
-   For example: ``1,0,0, 0...`` is 4 (in binary) but will not be recognised
-   because when pushed to the tuple it will be ``(...,0,0,1)`` is 
-   which means 1 (in binary). When reversed: ``0,0,1,...`` and pushed
-   to a tuple it will be ``(0,0,1,...)``
+   For example: ``1,0,0,...`` is 4 (in binary) but will not be recognised
+   because when pushed to the tuple it will be ``(...,0,0,1)``. To fix this
+   the bits are reversed. For example: ``1,0,1,...``
+   which means 3 (in binary). When reversed and pushed
+   to a tuple it will be ``(1,0,1,...)`` preserving the meaning of the
+   binary.
 
 .. HINT::
    Tuple-binary values are always in reverse binary order,
@@ -46,7 +48,7 @@ with integer conversion.
 
 There are `4`, `8` and `16` bit generators.
 
-They take in a one `n-bit binary number` (where n < specified-bit).  
+They take in a one `n-bit binary number` (where n < specified-bit).
 
 Returns a tuple-binary of size `n`.
 
@@ -76,7 +78,7 @@ Where the function does this:
 Call the function ``generateStreamBits`` and provide one 1-bit value.
 
 .. code-block::
-    
+
     generateStreamBits(1)
     Output: 65535 # decimal representation
 
@@ -94,7 +96,7 @@ The argument supplied is the `tuple-binary`.
 The return value is an `integer`.
 
 .. code-block::
-    
+
     tupleToBinary((1,0))
     Output: 2 # decimal representation
 

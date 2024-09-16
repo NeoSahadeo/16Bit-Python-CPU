@@ -120,10 +120,12 @@ creates a tuple of binary values <strong>Tuple-binary</strong>.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>The bits are reversed to make trailing zeros important
-For example: <code class="docutils literal notranslate"><span class="pre">1,0,0,</span> <span class="pre">0...</span></code> is 4 (in binary) but will not be recognised
-because when pushed to the tuple it will be <code class="docutils literal notranslate"><span class="pre">(...,0,0,1)</span></code> is
-which means 1 (in binary). When reversed: <code class="docutils literal notranslate"><span class="pre">0,0,1,...</span></code> and pushed
-to a tuple it will be <code class="docutils literal notranslate"><span class="pre">(0,0,1,...)</span></code></p>
+For example: <code class="docutils literal notranslate"><span class="pre">1,0,0,...</span></code> is 4 (in binary) but will not be recognised
+because when pushed to the tuple it will be <code class="docutils literal notranslate"><span class="pre">(...,0,0,1)</span></code>. To fix this
+the bits are reversed. For example: <code class="docutils literal notranslate"><span class="pre">1,0,1,...</span></code>
+which means 3 (in binary). When reversed and pushed
+to a tuple it will be <code class="docutils literal notranslate"><span class="pre">(1,0,1,...)</span></code> preserving the meaning of the
+binary.</p>
 </div>
 <div class="admonition hint">
 <p class="admonition-title">Hint</p>
